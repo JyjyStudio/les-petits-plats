@@ -94,6 +94,7 @@ header h1 {
   margin: 5px 15px 5px 0;
   position: relative;
   width: 150px;
+  height: fit-content;
 }
 .filtres .filtre i {
   font-size: 1.3em;
@@ -142,7 +143,7 @@ header h1 {
 .filtres .filtre-ingredients-content,
 .filtres .filtre-appareils-content,
 .filtres .filtre-ustensiles-content {
-  display: grid;
+  display: none;
   grid-template-columns: 1fr 1fr 1fr;
   width: 600px;
   color: #fff;
