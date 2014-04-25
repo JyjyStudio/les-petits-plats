@@ -92,6 +92,7 @@ header {
 		margin: 5px 15px 5px 0;
 		position: relative;
 		width: 150px;
+		height: fit-content;
 		i {
 			font-size: 1.3em;
 			position: absolute;
@@ -136,7 +137,7 @@ header {
 	.filtre-ingredients-content, 
 	.filtre-appareils-content, 
 	.filtre-ustensiles-content {
-		display: grid;
+		display: none;
 		grid-template-columns: 1fr 1fr 1fr;
 		width: 600px;
 		color: #fff;
