@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Les petits plats</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="scripts/app.js" defer></script>
+</head>
+<body>
+    <header>
+        <img class="logo" src="assets/logo.png" alt="logo du site"/>
+    </header>
+    <main>
+        <div class="search">
+            <form class="form">
+                <input class="search-input" type="text" placeholder="Rechercher une recette"/>
+                <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            </form>
+        </div>
+        <div class="tags">
+            <div class="tag">Coco<i class="fa-regular fa-circle-xmark"></i></div>
+            <div class="tag">Miel<i class="fa-regular fa-circle-xmark"></i></div>
+            <div class="tag">Curry<i class="fa-regular fa-circle-xmark"></i></div>
+            <div class="tag">Lait<i class="fa-regular fa-circle-xmark"></i></div>
+        </div>
+        <div class="filtres">
+            <div class="filtre" id="filtre-ingredients">
+                <input id="input-ingredients" type="text" placeholder="Ingrédients"/><i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="filtre" id="filtre-appareils">
+                <input id="input-appareils" type="text" placeholder="Appareils"/><i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="filtre" id="filtre-ustensiles">
+                <input id="input-ustensiles" type="text" placeholder="Ustensils"/><i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </div>
+        <div class="content">
+
+        </div>
+    </main>
+</body>
+</html>
