@@ -1,0 +1,17 @@
+{
+  "name": "projet-7",
+  "version": "1.0.0",
+  "description": "Les Petits Plats",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch sass:css --no-source-map",
+    "sass-compressed": "sass --watch sass:css --style compressed --no-source-map",
+    "lint": "eslint ./"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.13.0",
+    "sass": "^1.50.0"
+  }
+}
