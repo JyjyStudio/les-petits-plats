@@ -27,7 +27,7 @@ h1 {
 .search form {
   position: relative;
 }
-.search .search-input {
+.search .search-bar {
   display: block;
   margin: 0 auto;
   width: 100%;
@@ -37,7 +37,7 @@ h1 {
   border: none;
   outline: none;
 }
-.search .search-input[placeholder] {
+.search .search-bar[placeholder] {
   padding-left: 20px;
 }
 .search .search-icon {
@@ -149,8 +149,8 @@ h1 {
   display: flex;
   justify-content: space-between;
   width: 90%;
-  margin: 20px auto;
-  font-size: 18px;
+  margin: 15px auto;
+  font-size: 17px;
 }
 .recipe-card__title {
   width: 65%;
@@ -173,8 +173,11 @@ h1 {
 }
 .recipe-card__ingredients-description--description {
   flex: 3;
+}
+.recipe-card__ingredients-description--description, .recipe-card__ingredients-description--ingredients {
   display: -webkit-box;
-  -webkit-line-clamp: 8;
+  -webkit-line-clamp: 9;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  height: 100%;
 }
