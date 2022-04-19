@@ -1,20 +1,22 @@
-import RecipesApi from './Api/Api.js';
-import RecipeCard from './templates/RecipeCard.js';
+import CardFactory from './factories/CardFactory.js';
+import Filter from './utils/Filter.js';
+
 
 class App {
 	constructor() {
-		this.cardWrapper = document.querySelector('main .recipes');
-		this.recipesApi = new RecipesApi('data/recipes.json');
+		this.factory = new CardFactory();
+		this.filter = new Filter();
 	}
 
 	async main() {
-		const recipesData = await this.recipesApi.getRecipes();
-		recipesData.forEach(recipe => {
-			const Template = new RecipeCard(recipe);
-			this.cardWrapper.appendChild(Template.createCard()); 
-		});
+		
+		this.factory.createCards();
+		
+		this.filter.getValueFromSearchBar();
+		
 	}
 }
 
 const app = new App();
+
 app.main();
