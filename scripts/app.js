@@ -12,7 +12,7 @@ class App {
 		
 		this.factory.createCards();
 		
-		this.filter.getValueFromSearchBar();
+		this.filter;
 		
 	}
 }
