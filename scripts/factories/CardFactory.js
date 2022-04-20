@@ -1,5 +1,5 @@
-import RecipesApi from './../Api/Api.js';
-import RecipeCard from './../templates/RecipeCard.js';
+import RecipesApi from '../Api/Api.js';
+import RecipeCard from '../templates/RecipeCard.js';
 
 export default class CardFactory {
 
