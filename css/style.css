@@ -40,15 +40,19 @@ h1 {
 .search .search-bar[placeholder] {
   padding-left: 20px;
 }
-.search .search-icon {
+.search #search-icon {
   position: absolute;
   top: 50%;
   right: 2%;
   transform: translatey(-50%);
 }
-.search .search-icon i {
+.search #search-icon i {
   font-size: 1.5em;
   cursor: pointer;
+}
+.search button {
+  border: none;
+  background: transparent;
 }
 
 .tags {
