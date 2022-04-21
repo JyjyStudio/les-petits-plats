@@ -40,7 +40,11 @@ export default class Filter {
 			const description = recipe.description.toLowerCase();
 			const ingredients = recipe.ingredients;
 
-			if(name.includes(searchedValue) || description.includes(searchedValue) || ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue))) {
+			const nameIncludeSearchedValue = name.includes(searchedValue);
+			const descriptionIncludeSearchedValue = description.includes(searchedValue);
+			const ingredientsIncludeSearchedValue = ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue));
+
+			if(nameIncludeSearchedValue || descriptionIncludeSearchedValue || ingredientsIncludeSearchedValue) {
 				Template.push(new RecipeCard(recipe));
 			}
 		}
