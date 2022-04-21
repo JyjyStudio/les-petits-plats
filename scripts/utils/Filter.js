@@ -13,8 +13,8 @@ export default class Filter {
 	getValueFromSearchBar() {
 		const searchInput = document.querySelector('form .search-bar');
 		searchInput.addEventListener('keyup', (e) => {
-			console.log(e.currentTarget.value);
-			if(e.keyCode !== 13) {	// touche entrée 
+			const searchValue = searchInput.value;
+			if(e.keyCode !== 13 && searchValue.length >=3) {	// touche entrée 
 				this.cardWrapper.innerHTML = '';
 				this.checkValue();
 			}
