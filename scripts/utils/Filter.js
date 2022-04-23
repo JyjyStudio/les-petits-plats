@@ -1,4 +1,3 @@
-// import CardFactory from '../factories/CardFactory.js';
 import RecipeCard from './../templates/RecipeCard.js';
 import RecipesApi from '../Api/Api.js';
 
@@ -10,21 +9,32 @@ export default class Filter {
 		this.focusOnload = this.focusOnload();
 	}
 	
-	getValueFromSearchBar() {
-		const searchInput = document.querySelector('form .search-bar');
-		searchInput.addEventListener('keyup', (e) => {
-			const searchValue = searchInput.value;
-			if(e.keyCode !== 13 && searchValue.length >=3) {	// touche entrée 
-				this.cardWrapper.innerHTML = '';
-				this.checkValue();
-			}
+	async displayAllRecipes() {
+		const recipes = await this.data;
+		this.cardWrapper.innerHTML = '';
+
+		recipes.forEach(recipe => {
+			const template = new RecipeCard(recipe);
+			this.cardWrapper.appendChild(template.createCard());
 		});
-		
+	}
+	
+	getValueFromSearchBar() {
 		const form = document.getElementById('search-form');
 		form.addEventListener('submit', (e) => {
 			e.preventDefault();
 			this.cardWrapper.innerHTML = '';
 			this.checkValue();
+		});
+
+		const searchInput = document.querySelector('form .search-bar');
+		searchInput.addEventListener('keyup', (e) => {
+			const searchValue = searchInput.value;
+			if(e.keyCode !== 13 && searchValue.length >=3) {
+				this.checkValue();
+			}else {
+				this.displayAllRecipes();
+			}
 		});
 	}
 
@@ -48,7 +58,8 @@ export default class Filter {
 				Template.push(new RecipeCard(recipe));
 			}
 		}
-		// si le tableau de correspondance est vide => message, sinon affiche les resultats via RecipeCard.createCard()
+		// efface les recettes présentes puis: si le tableau de correspondance est vide => affiche 'aucun résultat trouvé.', sinon affiche les resultats trouvé via RecipeCard.createCard()
+		this.cardWrapper.innerHTML = '';
 		if(Template.length == 0) {
 			this.cardWrapper.textContent = 'aucun résultat trouvé';
 		} else {
