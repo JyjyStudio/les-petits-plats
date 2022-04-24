@@ -91,14 +91,12 @@ header h1 {
 }
 .filtres .filtre {
   margin: 5px 15px 5px 0;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
   position: relative;
 }
 .filtres .filtre i {
   font-size: 1.3em;
   position: absolute;
+  top: 17px;
   right: 20px;
   color: #fff;
   cursor: pointer;
