@@ -103,6 +103,9 @@ header {
 		}
 		&.clicked {
 			width: 600px;
+			@include mobiles {
+				width: 100%;
+			}
 			i {
 				transform: rotate(180deg);
 				transition: transform .3s ease-in-out .2s;
@@ -128,10 +131,16 @@ header {
 			width: 600px;
 			padding-bottom: 15px;
 			border-radius: 5px;
+			@include mobiles {
+				width: 100%;
+			}
 		}
 		input.clicked {
 			width: 600px;
 			border-radius: 5px 5px 0 0;
+			@include mobiles {
+				width: 100%;
+			}
 		}
 	}
 	.filtre-ingredients-content, 
@@ -144,6 +153,9 @@ header {
 		overflow: hidden;
     	border-radius: 0 0 5px 5px;
 		padding-left: 15px;
+		@include mobiles {
+			width: 100%;
+		}
 		.tag {
 			list-style-type: none;
 		}
