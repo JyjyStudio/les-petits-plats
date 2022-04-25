@@ -107,6 +107,11 @@ header h1 {
 .filtres .filtre.clicked {
   width: 600px;
 }
+@media screen and (max-width: 800px) {
+  .filtres .filtre.clicked {
+    width: 100%;
+  }
+}
 .filtres .filtre.clicked i {
   transform: rotate(180deg);
   transition: transform 0.3s ease-in-out 0.2s;
@@ -134,11 +139,25 @@ header h1 {
   padding-bottom: 15px;
   border-radius: 5px;
 }
+@media screen and (max-width: 800px) {
+  .filtres #filtre-ingredients .clicked,
+.filtres #filtre-appareils .clicked,
+.filtres #filtre-ustensiles .clicked {
+    width: 100%;
+  }
+}
 .filtres #filtre-ingredients input.clicked,
 .filtres #filtre-appareils input.clicked,
 .filtres #filtre-ustensiles input.clicked {
   width: 600px;
   border-radius: 5px 5px 0 0;
+}
+@media screen and (max-width: 800px) {
+  .filtres #filtre-ingredients input.clicked,
+.filtres #filtre-appareils input.clicked,
+.filtres #filtre-ustensiles input.clicked {
+    width: 100%;
+  }
 }
 .filtres .filtre-ingredients-content,
 .filtres .filtre-appareils-content,
@@ -150,6 +169,13 @@ header h1 {
   overflow: hidden;
   border-radius: 0 0 5px 5px;
   padding-left: 15px;
+}
+@media screen and (max-width: 800px) {
+  .filtres .filtre-ingredients-content,
+.filtres .filtre-appareils-content,
+.filtres .filtre-ustensiles-content {
+    width: 100%;
+  }
 }
 .filtres .filtre-ingredients-content .tag,
 .filtres .filtre-appareils-content .tag,
