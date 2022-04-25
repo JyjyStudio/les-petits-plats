@@ -88,10 +88,12 @@ header h1 {
   display: flex;
   flex-wrap: wrap;
   margin-top: 25px;
+  position: absolute;
 }
 .filtres .filtre {
   margin: 5px 15px 5px 0;
   position: relative;
+  width: 150px;
 }
 .filtres .filtre i {
   font-size: 1.3em;
@@ -100,6 +102,13 @@ header h1 {
   right: 20px;
   color: #fff;
   cursor: pointer;
+}
+.filtres .filtre.clicked {
+  width: 600px;
+}
+.filtres .filtre.clicked i {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out 0.2s;
 }
 .filtres #filtre-ingredients input,
 .filtres #filtre-appareils input,
@@ -117,13 +126,42 @@ header h1 {
 .filtres #filtre-ustensiles input::placeholder {
   color: #fff;
 }
-.filtres #filtre-ingredients input {
+.filtres #filtre-ingredients .clicked,
+.filtres #filtre-appareils .clicked,
+.filtres #filtre-ustensiles .clicked {
+  width: 600px;
+  padding-bottom: 15px;
+  border-radius: 5px;
+}
+.filtres #filtre-ingredients input.clicked,
+.filtres #filtre-appareils input.clicked,
+.filtres #filtre-ustensiles input.clicked {
+  width: 600px;
+  border-radius: 5px 5px 0 0;
+}
+.filtres .filtre-ingredients-content,
+.filtres .filtre-appareils-content,
+.filtres .filtre-ustensiles-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 600px;
+  color: #fff;
+  overflow: hidden;
+  border-radius: 0 0 5px 5px;
+  padding-left: 15px;
+}
+.filtres .filtre-ingredients-content .tag,
+.filtres .filtre-appareils-content .tag,
+.filtres .filtre-ustensiles-content .tag {
+  list-style-type: none;
+}
+.filtres #filtre-ingredients input, .filtres #filtre-ingredients .filtre-ingredients-content {
   background-color: #3282F7;
 }
-.filtres #filtre-appareils input {
+.filtres #filtre-appareils input, .filtres #filtre-appareils .filtre-appareils-content {
   background-color: #68D9A4;
 }
-.filtres #filtre-ustensiles input {
+.filtres #filtre-ustensiles input, .filtres #filtre-ustensiles .filtre-ustensiles-content {
   background-color: #ED6454;
 }
 
@@ -131,7 +169,7 @@ header h1 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 50px;
-  margin: 50px 0;
+  margin: 150px 0 50px;
 }
 @media screen and (max-width: 800px) {
   .recipes {
