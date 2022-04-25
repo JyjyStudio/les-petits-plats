@@ -87,9 +87,11 @@ header {
 	display: flex;
 	flex-wrap: wrap;
 	margin-top: 25px;
+	position: absolute;
 	.filtre {
 		margin: 5px 15px 5px 0;
 		position: relative;
+		width: 150px;
 		i {
 			font-size: 1.3em;
 			position: absolute;
@@ -97,6 +99,13 @@ header {
 			right: 20px;
 			color: #fff;
 			cursor: pointer;
+		}
+		&.clicked {
+			width: 600px;
+			i {
+				transform: rotate(180deg);
+				transition: transform .3s ease-in-out .2s;
+			}
 		}
 	}
 	#filtre-ingredients, 
@@ -114,19 +123,42 @@ header {
 				color: #fff;
 			}
 		}
+		.clicked {
+			width: 600px;
+			padding-bottom: 15px;
+			border-radius: 5px;
+		}
+		input.clicked {
+			width: 600px;
+			border-radius: 5px 5px 0 0;
+		}
+	}
+	.filtre-ingredients-content, 
+	.filtre-appareils-content, 
+	.filtre-ustensiles-content {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		width: 600px;
+		color: #fff;
+		overflow: hidden;
+    	border-radius: 0 0 5px 5px;
+		padding-left: 15px;
+		.tag {
+			list-style-type: none;
+		}
 	}
 	#filtre-ingredients{
-		input {
+		input,.filtre-ingredients-content {
 			background-color: #3282F7;
 		}
 	}
 	#filtre-appareils{
-		input {
+		input, .filtre-appareils-content {
 			background-color: #68D9A4;
 		}
 	}
 	#filtre-ustensiles{
-		input {
+		input, .filtre-ustensiles-content {
 			background-color: #ED6454;
 		}
 	}
@@ -136,7 +168,7 @@ header {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	gap: 50px;
-	margin: 50px 0;
+	margin: 150px 0 50px;
 	@include mobiles {
 		grid-template-columns: 1fr;
 	}
