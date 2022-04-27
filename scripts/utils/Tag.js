@@ -30,7 +30,7 @@ export default class Tag {
 		const {appareils, ingredients, ustensiles} = await this.getData();
 
 		const ingredientsTagsContainer = document.querySelector('.filtre-ingredients-content');
-		const apprareilsTagsContainer = document.querySelector('.filtre-appareils-content');
+		const appareilsTagsContainer = document.querySelector('.filtre-appareils-content');
 		const ustensilesTagsContainer = document.querySelector('.filtre-ustensiles-content');
 		
 		const ingredientsFilter = document.getElementById('filtre-ingredients');
@@ -40,42 +40,41 @@ export default class Tag {
 		const ingredientsInput = document.getElementById('input-ingredients');
 		const appareilsInput = document.getElementById('input-appareils');
 		const ustensilesInput = document.getElementById('input-ustensiles');
-
-		function styliseInputOnClick(filter, input, element, tagsContainer) {
-			filter.classList.add('clicked');
-			input.classList.add('clicked');
-			input.placeholder = `Rechercher un ${element}`;
-			tagsContainer.style.height = '300px';
-			tagsContainer.style.display = 'grid';
-		}
 		
+		const getValuesAndBindEvent = (data, tagsContainer, filter, input) => {
+			data.forEach(dataValue => {
+				tagsContainer.innerHTML += `<li class='tag'>${dataValue}</li>`;
+			});
+			styliseInputOnClick(filter, input, tagsContainer);
+		};
+
+		const styliseInputOnClick = (filter, input, tagsContainer) => {
+			filter.addEventListener('click', () => {
+				filter.classList.add('selected');
+				input.classList.add('selected');
+				tagsContainer.classList.add('selected');
+				const closeIcon = document.querySelector('.filtre.selected i');
+				closeIcon.addEventListener('click', () => {
+					console.log(filter.classList);
+					filter.classList.toggle('selected');
+					input.classList.toggle('selected');
+					tagsContainer.classList.toggle('selected');
+				});
+			});
+		};
+
+		getValuesAndBindEvent(ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput);
+		getValuesAndBindEvent(appareils, appareilsTagsContainer, appareilsFilter, appareilsInput);
+		getValuesAndBindEvent(ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput);
+
+		// faire en sorte que lorsque l'on clique en dehors de l'input selectionné, l'input se referme
 		ingredientsTagsContainer.addEventListener('click', (e) => {
 			console.log(e.target);
 			if(e.target !== ingredientsFilter) {
 				ingredientsTagsContainer.style.display = 'none';
 			}
 		});
-		ingredients.forEach(ingredient => {
-			ingredientsTagsContainer.innerHTML += `<li class='tag'>${ingredient}</li>`;
-		});
-		ingredientsFilter.addEventListener('click', () => {
-			styliseInputOnClick(ingredientsFilter, ingredientsInput, 'ingredient', ingredientsTagsContainer);
-		});
-
-		appareils.forEach(appareil => {
-			apprareilsTagsContainer.innerHTML += `<li class='tag'>${appareil}</li>`;
-		});
-		appareilsFilter.addEventListener('click', () => {
-			styliseInputOnClick(appareilsFilter, appareilsInput, 'appareil', apprareilsTagsContainer);
-		});
-
-		ustensiles.forEach(ustensile => {
-			ustensilesTagsContainer.innerHTML += `<li class='tag'>${ustensile}</li>`;
-		});
-		ustensilesFilter.addEventListener('click', () => {
-			styliseInputOnClick(ustensilesFilter, ustensilesInput, 'ustensile', ustensilesTagsContainer);			
-		});	
-		
+		// fin
 	}
 	
 }
