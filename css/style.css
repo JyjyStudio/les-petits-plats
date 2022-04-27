@@ -90,29 +90,40 @@ header h1 {
   margin-top: 25px;
   position: absolute;
 }
+@media screen and (max-width: 800px) {
+  .filtres {
+    margin-top: 5px;
+  }
+}
 .filtres .filtre {
   margin: 5px 15px 5px 0;
   position: relative;
   width: 150px;
   height: fit-content;
 }
-.filtres .filtre i {
-  font-size: 1.3em;
-  position: absolute;
-  top: 17px;
-  right: 20px;
-  color: #fff;
-  cursor: pointer;
-}
-.filtres .filtre.clicked {
-  width: 600px;
-}
 @media screen and (max-width: 800px) {
-  .filtres .filtre.clicked {
+  .filtres .filtre {
     width: 100%;
   }
 }
-.filtres .filtre.clicked i {
+.filtres .filtre i {
+  font-size: 1.3em;
+  position: absolute;
+  top: -3px;
+  right: 0;
+  padding: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+.filtres .filtre.selected {
+  width: 600px;
+}
+@media screen and (max-width: 800px) {
+  .filtres .filtre.selected {
+    width: 100%;
+  }
+}
+.filtres .filtre.selected i {
   transform: rotate(180deg);
   transition: transform 0.3s ease-in-out 0.2s;
 }
@@ -127,35 +138,41 @@ header h1 {
   outline: none;
   padding-left: 15px;
 }
+@media screen and (max-width: 800px) {
+  .filtres #filtre-ingredients input,
+.filtres #filtre-appareils input,
+.filtres #filtre-ustensiles input {
+    width: 100%;
+  }
+}
 .filtres #filtre-ingredients input::placeholder,
 .filtres #filtre-appareils input::placeholder,
 .filtres #filtre-ustensiles input::placeholder {
   color: #fff;
 }
-.filtres #filtre-ingredients .clicked,
-.filtres #filtre-appareils .clicked,
-.filtres #filtre-ustensiles .clicked {
+.filtres #filtre-ingredients .selected,
+.filtres #filtre-appareils .selected,
+.filtres #filtre-ustensiles .selected {
   width: 600px;
   padding-bottom: 15px;
-  border-radius: 5px;
 }
 @media screen and (max-width: 800px) {
-  .filtres #filtre-ingredients .clicked,
-.filtres #filtre-appareils .clicked,
-.filtres #filtre-ustensiles .clicked {
+  .filtres #filtre-ingredients .selected,
+.filtres #filtre-appareils .selected,
+.filtres #filtre-ustensiles .selected {
     width: 100%;
   }
 }
-.filtres #filtre-ingredients input.clicked,
-.filtres #filtre-appareils input.clicked,
-.filtres #filtre-ustensiles input.clicked {
+.filtres #filtre-ingredients input.selected,
+.filtres #filtre-appareils input.selected,
+.filtres #filtre-ustensiles input.selected {
   width: 600px;
   border-radius: 5px 5px 0 0;
 }
 @media screen and (max-width: 800px) {
-  .filtres #filtre-ingredients input.clicked,
-.filtres #filtre-appareils input.clicked,
-.filtres #filtre-ustensiles input.clicked {
+  .filtres #filtre-ingredients input.selected,
+.filtres #filtre-appareils input.selected,
+.filtres #filtre-ustensiles input.selected {
     width: 100%;
   }
 }
@@ -168,19 +185,29 @@ header h1 {
   color: #fff;
   overflow: hidden;
   border-radius: 0 0 5px 5px;
-  padding-left: 15px;
+}
+.filtres .filtre-ingredients-content.selected,
+.filtres .filtre-appareils-content.selected,
+.filtres .filtre-ustensiles-content.selected {
+  display: grid;
+  height: 16rem;
 }
 @media screen and (max-width: 800px) {
-  .filtres .filtre-ingredients-content,
-.filtres .filtre-appareils-content,
-.filtres .filtre-ustensiles-content {
+  .filtres .filtre-ingredients-content.selected,
+.filtres .filtre-appareils-content.selected,
+.filtres .filtre-ustensiles-content.selected {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    padding: 0;
+    overflow-y: scroll;
   }
 }
-.filtres .filtre-ingredients-content .tag,
-.filtres .filtre-appareils-content .tag,
-.filtres .filtre-ustensiles-content .tag {
+.filtres .filtre-ingredients-content.selected .tag,
+.filtres .filtre-appareils-content.selected .tag,
+.filtres .filtre-ustensiles-content.selected .tag {
   list-style-type: none;
+  padding: 0.5rem 1rem;
 }
 .filtres #filtre-ingredients input, .filtres #filtre-ingredients .filtre-ingredients-content {
   background-color: #3282F7;
@@ -201,6 +228,7 @@ header h1 {
 @media screen and (max-width: 800px) {
   .recipes {
     grid-template-columns: 1fr;
+    margin: 230px 0;
   }
 }
 
