@@ -88,20 +88,27 @@ header {
 	flex-wrap: wrap;
 	margin-top: 25px;
 	position: absolute;
+	@include mobiles {
+		margin-top: 5px;
+	}
 	.filtre {
 		margin: 5px 15px 5px 0;
 		position: relative;
 		width: 150px;
 		height: fit-content;
+		@include mobiles {
+			width: 100%;
+		}
 		i {
 			font-size: 1.3em;
 			position: absolute;
-			top: 17px;
-			right: 20px;
+			top: -3px;
+			right: 0;
+			padding: 20px;
 			color: #fff;
 			cursor: pointer;
 		}
-		&.clicked {
+		&.selected {
 			width: 600px;
 			@include mobiles {
 				width: 100%;
@@ -123,19 +130,21 @@ header {
 			border: none;
 			outline: none;
 			padding-left: 15px;
+			@include mobiles {
+				width: 100%;
+			}
 			&::placeholder {
 				color: #fff;
 			}
 		}
-		.clicked {
+		.selected {
 			width: 600px;
 			padding-bottom: 15px;
-			border-radius: 5px;
 			@include mobiles {
 				width: 100%;
 			}
 		}
-		input.clicked {
+		input.selected {
 			width: 600px;
 			border-radius: 5px 5px 0 0;
 			@include mobiles {
@@ -145,19 +154,27 @@ header {
 	}
 	.filtre-ingredients-content, 
 	.filtre-appareils-content, 
-	.filtre-ustensiles-content {
+	.filtre-ustensiles-content { //ul
 		display: none;
 		grid-template-columns: 1fr 1fr 1fr;
 		width: 600px;
 		color: #fff;
 		overflow: hidden;
     	border-radius: 0 0 5px 5px;
-		padding-left: 15px;
-		@include mobiles {
-			width: 100%;
-		}
-		.tag {
-			list-style-type: none;
+		&.selected {
+			display: grid;
+			height: 16rem;
+			@include mobiles {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				padding: 0;
+				overflow-y: scroll;
+			}
+			.tag {
+				list-style-type: none;
+				padding: .5rem 1rem;
+			}
 		}
 	}
 	#filtre-ingredients{
@@ -184,6 +201,7 @@ header {
 	margin: 150px 0 50px;
 	@include mobiles {
 		grid-template-columns: 1fr;
+		margin: 230px 0;
 	}
 }
 .recipe-card {
