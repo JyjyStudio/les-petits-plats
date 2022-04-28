@@ -49,17 +49,15 @@ export default class Tag {
 		};
 
 		const styliseInputOnClick = (filter, input, tagsContainer) => {
-			filter.addEventListener('click', () => {
+			input.addEventListener('focus', () => {
 				filter.classList.add('selected');
 				input.classList.add('selected');
 				tagsContainer.classList.add('selected');
-				const closeIcon = document.querySelector('.filtre.selected i');
-				closeIcon.addEventListener('click', () => {
-					console.log(filter.classList);
-					filter.classList.toggle('selected');
-					input.classList.toggle('selected');
-					tagsContainer.classList.toggle('selected');
-				});
+			});
+			input.addEventListener('focusout', () => {
+				filter.classList.remove('selected');
+				input.classList.remove('selected');
+				tagsContainer.classList.remove('selected');
 			});
 		};
 
@@ -67,14 +65,6 @@ export default class Tag {
 		getValuesAndBindEvent(appareils, appareilsTagsContainer, appareilsFilter, appareilsInput);
 		getValuesAndBindEvent(ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput);
 
-		// faire en sorte que lorsque l'on clique en dehors de l'input selectionné, l'input se referme
-		ingredientsTagsContainer.addEventListener('click', (e) => {
-			console.log(e.target);
-			if(e.target !== ingredientsFilter) {
-				ingredientsTagsContainer.style.display = 'none';
-			}
-		});
-		// fin
 	}
 	
 }
