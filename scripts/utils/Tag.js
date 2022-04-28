@@ -67,6 +67,7 @@ export default class Tag {
 				filter.classList.toggle('selected');
 				input.classList.toggle('selected');
 				tagsContainer.classList.toggle('selected');
+				input.classList.contains('selected') ? input.focus() : '';
 			});
 		};
 
