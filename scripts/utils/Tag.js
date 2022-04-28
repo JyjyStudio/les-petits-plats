@@ -11,7 +11,6 @@ export default class Tag {
 		let appareils = [];
 		let ustensiles = [];
 
-		console.log(data);
 		data.forEach(recipe => {
 			recipe.appliance ? appareils.push(recipe.appliance) : '';
 			recipe.ingredients.forEach(ingredient => ingredients.push(ingredient.ingredient));
@@ -40,15 +39,20 @@ export default class Tag {
 		const ingredientsInput = document.getElementById('input-ingredients');
 		const appareilsInput = document.getElementById('input-appareils');
 		const ustensilesInput = document.getElementById('input-ustensiles');
+
+		const filterIcons = document.querySelectorAll('.filtre i');
+		const ingredientsIcon = filterIcons[0];
+		const appareilsIcon = filterIcons[1];
+		const ustencilesIcon = filterIcons[2];
 		
-		const getValuesAndBindEvent = (data, tagsContainer, filter, input) => {
+		const getValuesAndBindEvent = (data, tagsContainer, filter, input, icon) => {
 			data.forEach(dataValue => {
 				tagsContainer.innerHTML += `<li class='tag'>${dataValue}</li>`;
 			});
-			styliseInputOnClick(filter, input, tagsContainer);
+			styliseInputOnClick(filter, input, tagsContainer, icon);
 		};
 
-		const styliseInputOnClick = (filter, input, tagsContainer) => {
+		const styliseInputOnClick = (filter, input, tagsContainer, icon) => {
 			input.addEventListener('focus', () => {
 				filter.classList.add('selected');
 				input.classList.add('selected');
@@ -59,11 +63,16 @@ export default class Tag {
 				input.classList.remove('selected');
 				tagsContainer.classList.remove('selected');
 			});
+			icon.addEventListener('click', ()=> {
+				filter.classList.toggle('selected');
+				input.classList.toggle('selected');
+				tagsContainer.classList.toggle('selected');
+			});
 		};
 
-		getValuesAndBindEvent(ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput);
-		getValuesAndBindEvent(appareils, appareilsTagsContainer, appareilsFilter, appareilsInput);
-		getValuesAndBindEvent(ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput);
+		getValuesAndBindEvent(ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
+		getValuesAndBindEvent(appareils, appareilsTagsContainer, appareilsFilter, appareilsInput, appareilsIcon);
+		getValuesAndBindEvent(ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustencilesIcon);
 
 	}
 	
