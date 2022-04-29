@@ -75,12 +75,10 @@ export default class Tag {
 				tagsContainer.classList.add('selected');
 			});
 			// lorsque l'input est ouvert, il se ferme en cliquant en dehors
-			document.addEventListener('click', event => {
-				if (event.target.parentElement !== document.querySelector('.filtre.selected')) {
-					filter.classList.remove('selected');
-					input.classList.remove('selected');
-					tagsContainer.classList.remove('selected');
-				}
+			input.addEventListener('focusout', () => {
+				filter.classList.remove('selected');
+				input.classList.remove('selected');
+				tagsContainer.classList.remove('selected');
 			});
 			// en cliquant sur l'icone chevron, l'input s'ouvre ou se ferme
 			icon.addEventListener('click', ()=> {
@@ -89,16 +87,6 @@ export default class Tag {
 				tagsContainer.classList.toggle('selected');
 				input.classList.contains('selected') ? input.focus() : '';
 			});
-			// les inputs s'ouvrent en tabulant dessu et se ferment en allant à l'élément suivant
-			document.addEventListener('keyup', event => { 
-				if(event.key == 'Tab') {
-					input.addEventListener('focusout', () => {
-						filter.classList.remove('selected');
-						input.classList.remove('selected');
-						tagsContainer.classList.remove('selected');
-					});
-				}
-			}) ;
 		};
 
 		getValuesAndBindEvent(ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
