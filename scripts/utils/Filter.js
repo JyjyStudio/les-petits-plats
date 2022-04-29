@@ -29,12 +29,17 @@ export default class Filter {
 
 		const searchInput = document.querySelector('form .search-bar');
 		searchInput.addEventListener('keyup', (e) => {
+			console.time('search');
+			
 			const searchValue = searchInput.value;
+			
 			if(e.keyCode !== 13 && searchValue.length >=3) {
 				this.checkValue();
 			}else {
 				this.displayAllRecipes();
 			}
+
+			console.timeEnd('search');
 		});
 	}
 
