@@ -17,8 +17,8 @@ export default class Tag {
 			recipe.ustensils.forEach(ustensil => ustensiles.push(ustensil));
 		});
 
+		ingredients = Array.from(new Set(ingredients)).slice(0, 25);
 		appareils = new Set(appareils);
-		ingredients = new Set(ingredients);
 		ustensiles = new Set(ustensiles);
 
 		return {appareils, ingredients, ustensiles};
