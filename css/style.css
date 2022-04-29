@@ -208,6 +208,12 @@ header h1 {
 .filtres .filtre-ustensiles-content.selected .tag {
   list-style-type: none;
   padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.filtres .filtre-ingredients-content.selected .tag:hover,
+.filtres .filtre-appareils-content.selected .tag:hover,
+.filtres .filtre-ustensiles-content.selected .tag:hover {
+  color: black;
 }
 .filtres #filtre-ingredients input, .filtres #filtre-ingredients .filtre-ingredients-content {
   background-color: #3282F7;
