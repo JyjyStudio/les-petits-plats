@@ -44,7 +44,15 @@ export default class Tag {
 		const ingredientsIcon = filterIcons[0];
 		const appareilsIcon = filterIcons[1];
 		const ustencilesIcon = filterIcons[2];
-		
+
+		/**
+		 * Récupere la data, et affiche les tags. puis gère les evenements via la fonction styliseInputOnClick()
+		 * @param {Array} data - tébleau d'objets qui contient toute la data qui provient du fichier json 
+		 * @param {HTMLElement} tagsContainer - container de tous les tags
+		 * @param {HTMLElement} filter - container global de chaque filtre
+		 * @param {HTMLElement} input - l'input de chaque filtre
+		 * @param {HTMLElement} icon - icone à droite de l'input qui permet d'ouvrir ou de fermer la liste des tags
+		 */
 		const getValuesAndBindEvent = (data, tagsContainer, filter, input, icon) => {
 			data.forEach(dataValue => {
 				tagsContainer.innerHTML += `<li class='tag'>${dataValue}</li>`;
@@ -52,6 +60,13 @@ export default class Tag {
 			styliseInputOnClick(filter, input, tagsContainer, icon);
 		};
 
+		/**
+		 * Gère les evenements liés aux tags
+		 * @param {HTMLElement} filter - container global de chaque filtre
+		 * @param {HTMLElement} input - l'input de chaque filtre
+		 * @param {HTMLElement} tagsContainer - container de tous les tags
+		 * @param {HTMLElement} icon - icone à droite de l'input qui permet d'ouvrir ou de fermer la liste des tags
+		 */
 		const styliseInputOnClick = (filter, input, tagsContainer, icon) => {
 			input.addEventListener('focus', () => {
 				filter.classList.add('selected');
