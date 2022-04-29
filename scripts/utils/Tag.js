@@ -68,22 +68,37 @@ export default class Tag {
 		 * @param {HTMLElement} icon - icone à droite de l'input qui permet d'ouvrir ou de fermer la liste des tags
 		 */
 		const styliseInputOnClick = (filter, input, tagsContainer, icon) => {
+			// l'input s'ouvre en cliquant sur çelui ci 
 			input.addEventListener('focus', () => {
 				filter.classList.add('selected');
 				input.classList.add('selected');
 				tagsContainer.classList.add('selected');
 			});
-			input.addEventListener('focusout', () => {
-				filter.classList.remove('selected');
-				input.classList.remove('selected');
-				tagsContainer.classList.remove('selected');
+			// lorsque l'input est ouvert, il se ferme en cliquant en dehors
+			document.addEventListener('click', event => {
+				if (event.target.parentElement !== document.querySelector('.filtre.selected')) {
+					filter.classList.remove('selected');
+					input.classList.remove('selected');
+					tagsContainer.classList.remove('selected');
+				}
 			});
+			// en cliquant sur l'icone chevron, l'input s'ouvre ou se ferme
 			icon.addEventListener('click', ()=> {
 				filter.classList.toggle('selected');
 				input.classList.toggle('selected');
 				tagsContainer.classList.toggle('selected');
 				input.classList.contains('selected') ? input.focus() : '';
 			});
+			// les inputs s'ouvrent en tabulant dessu et se ferment en allant à l'élément suivant
+			document.addEventListener('keyup', event => { 
+				if(event.key == 'Tab') {
+					input.addEventListener('focusout', () => {
+						filter.classList.remove('selected');
+						input.classList.remove('selected');
+						tagsContainer.classList.remove('selected');
+					});
+				}
+			}) ;
 		};
 
 		getValuesAndBindEvent(ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
