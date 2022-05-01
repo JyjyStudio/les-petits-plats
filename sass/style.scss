@@ -67,20 +67,31 @@ header {
 	display: flex;
 	flex-wrap: wrap;
 	margin-top: 25px;
-	.tag {
-		background-color: #3282F7;
+	.tag-Ingrédients, 
+	.tag-Appareils, 
+	.tag-Ustensiles {
 		color: #fff;
-		width: 107px;
-		height: 37px;
+		width: fit-content;
+		height: 45px;
 		margin: 5px 10px 5px 0;
+		padding: 0 0.5rem;
 		border-radius: 5px;
 		display: flex;
-		justify-content: space-around;
 		align-items: center;
 		cursor: pointer;
 		i {
 			font-size: 1.3em;
+			padding-left: .5rem;
 		}
+	}
+	.tag-Ingrédients {
+		background-color: #3282F7;
+	}
+	.tag-Appareils {
+		background-color: #68D9A4;
+	}
+	.tag-Ustensiles {
+		background-color: #ED6454;
 	}
 }
 .filtres {
