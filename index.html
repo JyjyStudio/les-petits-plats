@@ -14,10 +14,12 @@
     <script src="scripts/app.js" type="module" defer></script>
 </head>
 <body>
+
     <header>
         <img class="logo" src="assets/logo.svg" alt="logo du site"/>
         <h1>Les petits plats</h1>
     </header>
+
     <main>
         <div class="search">
             <form class="form" id="search-form">
@@ -25,12 +27,9 @@
                 <button type="submit" id="search-icon"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-        <div class="tags">
-            <div class="tag">Coco<i class="fa-regular fa-circle-xmark"></i></div>
-            <div class="tag">Miel<i class="fa-regular fa-circle-xmark"></i></div>
-            <div class="tag">Curry<i class="fa-regular fa-circle-xmark"></i></div>
-            <div class="tag">Lait<i class="fa-regular fa-circle-xmark"></i></div>
-        </div>
+
+        <div class="tags"></div>
+
         <div class="filtres">
             <div class="filtre" id="filtre-ingredients">
                 <input id="input-ingredients" type="text" placeholder="Ingrédients"/><i class="fa-solid fa-chevron-down"></i>
@@ -45,7 +44,10 @@
                 <ul class="filtre-ustensiles-content"></ul>
             </div>
         </div>
+
         <div class="recipes"></div>
+
     </main>
+    
 </body>
 </html>
