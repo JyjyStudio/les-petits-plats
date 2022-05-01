@@ -23,8 +23,9 @@ export default class Filter {
 		const form = document.getElementById('search-form');
 		form.addEventListener('submit', (e) => {
 			e.preventDefault();
+			const searchBarValue = document.querySelector('form .search-bar').value.toLowerCase();
 			this.cardWrapper.innerHTML = '';
-			this.checkValue();
+			this.checkValue(searchBarValue);
 		});
 
 		const searchInput = document.querySelector('form .search-bar');
@@ -34,7 +35,7 @@ export default class Filter {
 			const searchValue = searchInput.value;
 			
 			if(e.keyCode !== 13 && searchValue.length >=3) {
-				this.checkValue();
+				this.checkValue(searchValue);
 			}else {
 				this.displayAllRecipes();
 			}
@@ -43,9 +44,8 @@ export default class Filter {
 		});
 	}
 
-	async checkValue() {
+	async checkValue(searchedValue) {
 		const recipes = await this.data;
-		const searchedValue = document.querySelector('form .search-bar').value.toLowerCase();
 		let Template = [];
 
 		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, si oui remplit le tableau Template
@@ -58,8 +58,9 @@ export default class Filter {
 			const nameIncludeSearchedValue = name.includes(searchedValue);
 			const descriptionIncludeSearchedValue = description.includes(searchedValue);
 			const ingredientsIncludeSearchedValue = ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue));
+			const unitIncludeSearchedValue = ingredients.some(ingredient => ingredient.unit ? ingredient.unit.toLowerCase().includes(searchedValue) : '');
 
-			if(nameIncludeSearchedValue || descriptionIncludeSearchedValue || ingredientsIncludeSearchedValue) {
+			if(nameIncludeSearchedValue || descriptionIncludeSearchedValue || ingredientsIncludeSearchedValue || unitIncludeSearchedValue) {
 				Template.push(new RecipeCard(recipe));
 			}
 		}
@@ -72,6 +73,7 @@ export default class Filter {
 				this.cardWrapper.appendChild(template.createCard());
 			});
 		}
+		return Template;
 	}
 
 	// Focus sur le champs de recherche en arrivant sur la page
