@@ -1,3 +1,4 @@
+@charset "UTF-8";
 * {
   box-sizing: border-box;
   margin: 0;
@@ -27,6 +28,7 @@ header h1 {
   font-family: "DM sans", sans-serif;
   color: #D04F4F;
   font-size: 36px;
+  text-align: center;
 }
 
 .search {
