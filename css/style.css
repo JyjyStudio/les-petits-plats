@@ -68,7 +68,6 @@ header h1 {
 .tags {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 25px;
 }
 .tags .tag-Ingrédients,
 .tags .tag-Appareils,
@@ -76,7 +75,7 @@ header h1 {
   color: #fff;
   width: fit-content;
   height: 45px;
-  margin: 5px 10px 5px 0;
+  margin: 15px 10px 5px 0;
   padding: 0 0.5rem;
   border-radius: 5px;
   display: flex;
@@ -102,7 +101,7 @@ header h1 {
 .filtres {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 25px;
+  margin-top: 5px;
   position: absolute;
 }
 @media screen and (max-width: 800px) {
