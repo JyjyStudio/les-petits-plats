@@ -67,14 +67,13 @@ header {
 .tags {
 	display: flex;
 	flex-wrap: wrap;
-	margin-top: 25px;
 	.tag-Ingrédients, 
 	.tag-Appareils, 
 	.tag-Ustensiles {
 		color: #fff;
 		width: fit-content;
 		height: 45px;
-		margin: 5px 10px 5px 0;
+		margin: 15px 10px 5px 0;
 		padding: 0 0.5rem;
 		border-radius: 5px;
 		display: flex;
@@ -98,7 +97,7 @@ header {
 .filtres {
 	display: flex;
 	flex-wrap: wrap;
-	margin-top: 25px;
+	margin-top: 5px;
 	position: absolute;
 	@include mobiles {
 		margin-top: 5px;
