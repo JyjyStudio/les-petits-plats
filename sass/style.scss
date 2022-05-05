@@ -213,10 +213,10 @@ header {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	gap: 50px;
-	margin: 150px 0 50px;
+	margin: 100px 0 50px;
 	@include mobiles {
 		grid-template-columns: 1fr;
-		margin: 280px 0 50px;
+		margin: 240px 0 50px;
 	}
 }
 .recipe-card {
