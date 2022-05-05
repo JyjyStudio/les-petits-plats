@@ -32,7 +32,7 @@ export default class Filter {
 		searchInput.addEventListener('keyup', (e) => {
 			console.time('search');
 			
-			const searchValue = searchInput.value;
+			const searchValue = searchInput.value.toLowerCase();
 			
 			if(e.keyCode !== 13 && searchValue.length >=3) {
 				this.checkValue(searchValue);
