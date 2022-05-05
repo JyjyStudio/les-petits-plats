@@ -73,7 +73,7 @@ header {
 		color: #fff;
 		width: fit-content;
 		height: 45px;
-		margin: 15px 10px 5px 0;
+		margin: 15px 10px 0 0;
 		padding: 0 0.5rem;
 		border-radius: 5px;
 		display: flex;
@@ -97,7 +97,7 @@ header {
 .filtres {
 	display: flex;
 	flex-wrap: wrap;
-	margin-top: 5px;
+	margin-top: 10px;
 	position: absolute;
 	@include mobiles {
 		margin-top: 5px;
@@ -216,7 +216,7 @@ header {
 	margin: 150px 0 50px;
 	@include mobiles {
 		grid-template-columns: 1fr;
-		margin: 230px 0;
+		margin: 280px 0 50px;
 	}
 }
 .recipe-card {
