@@ -138,7 +138,8 @@ export default class Tag {
 				tag.addEventListener('click', async ()=> {
 					const tagValue = tag.textContent.toLowerCase();
 					const template = document.createElement('div');
-					template.innerHTML = `<div class="tag-${input.placeholder}">${tag.textContent}<i class="fa-regular fa-circle-xmark"></i></div>`;
+					template.classList.add(`tag-${input.placeholder}`);
+					template.innerHTML = `${tag.textContent}<i class="fa-regular fa-circle-xmark"></i>`;
 					document.querySelector('.tags').appendChild(template);
 					document.querySelector('.recipes').innerHTML = '';
 					let tagValues = await this.filter.checkValue(tagValue);
@@ -148,7 +149,6 @@ export default class Tag {
 						const ingredientsIncludeSearchedValue = value.recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(tagValue));
 						if(value.recipe.appliance.includes(tagValue) || value.recipe.description.includes(tagValue) || ingredientsIncludeSearchedValue){
 							tagValues.push(new RecipeCard(tagValue));
-							console.log(tagValues);
 						}						
 					});
 					// tagValues.reduce((previousValue, currentValue) => {
@@ -157,6 +157,7 @@ export default class Tag {
 					// 		tagValues.push(currentValue);
 					// 	}
 					// }, '');
+
 					// fermer le tag en cliquant sur l'icon X
 					const closeIcon = template.querySelector('i');
 					closeIcon.addEventListener('click', () => {
