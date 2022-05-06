@@ -7,8 +7,11 @@
 }
 body {
 	font-family: "lato", sans-serif;
-	width: 90%;
+	width: 80%;
 	margin: 0 auto;
+	@include mobiles {
+		width: 90%;
+	}
 }
 
 header {
@@ -40,7 +43,7 @@ header {
 		display: block;
 		margin: 0 auto;
 		width: 100%;
-		height: 50px;
+		height: 60px;
 		background: #E7E7E7;
 		border-radius: 5px;
 		border: none;
@@ -73,7 +76,7 @@ header {
 		color: #fff;
 		width: fit-content;
 		height: 45px;
-		margin: 15px 10px 0 0;
+		margin: 17px 10px 0 0;
 		padding: 0 0.5rem;
 		border-radius: 5px;
 		display: flex;
@@ -97,10 +100,11 @@ header {
 .filtres {
 	display: flex;
 	flex-wrap: wrap;
-	margin-top: 10px;
+	margin-top: 15px;
 	position: absolute;
 	@include mobiles {
-		margin-top: 5px;
+		width: 90%;
+		margin-top: 12px;
 	}
 	.filtre {
 		margin: 5px 15px 5px 0;
@@ -109,6 +113,7 @@ header {
 		height: fit-content;
 		@include mobiles {
 			width: 100%;
+			margin: 5px auto;
 		}
 		i {
 			font-size: 1.3em;
@@ -141,8 +146,10 @@ header {
 			border: none;
 			outline: none;
 			padding-left: 15px;
+			font-size: 1em;
 			@include mobiles {
 				width: 100%;
+				font-size: 1.1rem;
 			}
 			&::placeholder {
 				color: #fff;
@@ -150,7 +157,6 @@ header {
 		}
 		.selected {
 			width: 600px;
-			padding-bottom: 15px;
 			@include mobiles {
 				width: 100%;
 			}
@@ -213,7 +219,7 @@ header {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	gap: 50px;
-	margin: 100px 0 50px;
+	margin: 110px 0 50px;
 	@include mobiles {
 		grid-template-columns: 1fr;
 		margin: 240px 0 50px;
