@@ -5,7 +5,7 @@ export default class Filter {
 	constructor() {
 		this.data = new RecipesApi('data/recipes.json').getRecipes();
 		this.cardWrapper = document.querySelector('main .recipes');
-		this.getValueFromSearchBar = this.getValueFromSearchBar();
+		this.getCompareValueFromSearchBar = this.getCompareValueFromSearchBar();
 		this.focusOnload = this.focusOnload();
 	}
 	
@@ -19,7 +19,7 @@ export default class Filter {
 		});
 	}
 	
-	getValueFromSearchBar() {
+	getCompareValueFromSearchBar() {
 		const form = document.getElementById('search-form');
 		form.addEventListener('submit', (e) => {
 			e.preventDefault();
@@ -32,13 +32,15 @@ export default class Filter {
 		searchInput.addEventListener('keyup', (e) => {
 			console.time('search');
 			
-			const searchValue = searchInput.value.toLowerCase();
+			const searchedValues = searchInput.value.toLowerCase().split(' ');
 			
-			if(e.keyCode !== 13 && searchValue.length >=3) {
-				this.checkValue(searchValue);
-			}else {
-				this.displayAllRecipes();
-			}
+			searchedValues.forEach(searchedValue => {
+				if(e.keyCode !== 13 && searchedValue.length >=3) {
+					this.checkValue(searchedValue);
+				}else {
+					this.displayAllRecipes();
+				}
+			});
 
 			console.timeEnd('search');
 		});
@@ -63,6 +65,7 @@ export default class Filter {
 			if(nameIncludeSearchedValue || descriptionIncludeSearchedValue || ingredientsIncludeSearchedValue || unitIncludeSearchedValue) {
 				Template.push(new RecipeCard(recipe));
 			}
+			
 		}
 		// efface les recettes présentes puis: si le tableau de correspondance est vide => affiche 'aucun résultat trouvé.', sinon affiche les resultats trouvé via RecipeCard.createCard()
 		this.cardWrapper.innerHTML = '';
