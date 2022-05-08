@@ -29,54 +29,45 @@ export default class Filter {
 		});
 
 		const searchInput = document.querySelector('form .search-bar');
-		searchInput.addEventListener('keyup', (e) => {
-			console.time('search');
+		searchInput.addEventListener('input', (e) => {
+			// console.time('search');
 			
-			const searchedValues = searchInput.value.toLowerCase().split(' ');
+			const searchedValue = searchInput.value.toLowerCase();
 			
-			searchedValues.forEach(searchedValue => {
-				if(e.keyCode !== 13 && searchedValue.length >=3) {
-					this.checkValue(searchedValue);
-				}else {
-					this.displayAllRecipes();
-				}
-			});
+			if(e.keyCode !== 13 && searchedValue.length >=3) {
+				this.checkValue(searchedValue);
+			}else {
+				this.displayAllRecipes();
+			}
 
-			console.timeEnd('search');
+			// console.timeEnd('search');
 		});
 	}
 
 	async checkValue(searchedValue) {
 		const recipes = await this.data;
-		let Template = [];
-
-		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, si oui remplit le tableau Template
-		for (let index = 0; index < recipes.length; index++) {
-			const recipe = recipes[index];
-			const name = recipe.name.toLowerCase();
-			const description = recipe.description.toLowerCase();
-			const ingredients = recipe.ingredients;
-
-			const nameIncludeSearchedValue = name.includes(searchedValue);
-			const descriptionIncludeSearchedValue = description.includes(searchedValue);
-			const ingredientsIncludeSearchedValue = ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue));
-			const unitIncludeSearchedValue = ingredients.some(ingredient => ingredient.unit ? ingredient.unit.toLowerCase().includes(searchedValue) : '');
-
-			if(nameIncludeSearchedValue || descriptionIncludeSearchedValue || ingredientsIncludeSearchedValue || unitIncludeSearchedValue) {
-				Template.push(new RecipeCard(recipe));
-			}
-			
-		}
+		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
+		let template = recipes.filter(recipe => 
+			recipe.name.toLowerCase().includes(searchedValue) 
+			|| recipe.description.toLowerCase().includes(searchedValue) 
+			|| recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue)) 
+			|| recipe.ingredients.some(ingredient => ingredient.unit ? ingredient.unit.toLowerCase().includes(searchedValue) : '') 
+		);
+		
+		template = template.map(el => new RecipeCard(el));
+	
 		// efface les recettes présentes puis: si le tableau de correspondance est vide => affiche 'aucun résultat trouvé.', sinon affiche les resultats trouvé via RecipeCard.createCard()
 		this.cardWrapper.innerHTML = '';
-		if(Template.length == 0) {
+		
+		if(template.length == 0) {
 			this.cardWrapper.textContent = 'aucun résultat trouvé';
 		} else {
-			Template.forEach(template => {
-				this.cardWrapper.appendChild(template.createCard());
+			template.forEach(el => {
+				this.cardWrapper.appendChild(el.createCard());
 			});
 		}
-		return Template;
+		
+		return template;
 	}
 
 	// Focus sur le champs de recherche en arrivant sur la page
