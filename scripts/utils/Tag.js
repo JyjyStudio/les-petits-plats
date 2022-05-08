@@ -5,6 +5,7 @@ import Filter from './Filter.js';
 export default class Tag {
 	constructor() {
 		this.data = new RecipesApi('data/recipes.json').getRecipes();
+		this.cardWrapper = document.querySelector('main .recipes');
 		this.filter = new Filter();
 	}
 
@@ -46,7 +47,7 @@ export default class Tag {
 		const filterIcons = document.querySelectorAll('.filtre i');
 		const ingredientsIcon = filterIcons[0];
 		const appareilsIcon = filterIcons[1];
-		const ustencilesIcon = filterIcons[2];
+		const ustensilesIcon = filterIcons[2];
 
 		/**
 		 * Récupere la data, et affiche les tags. puis gère les evenements via la fonction styliseInputOnClick()
@@ -69,6 +70,7 @@ export default class Tag {
 		 * @param {HTMLElement} input - l'input de chaque filtre
 		 * @param {HTMLElement} tagsContainer - container de tous les tags
 		 * @param {HTMLElement} icon - icone à droite de l'input qui permet d'ouvrir ou de fermer la liste des tags
+		 * @param {Array} data - tableau de données à traiter
 		 */
 		const styliseInputOnClick = (filter, input, tagsContainer, icon, data) => {
 			// l'input s'ouvre en cliquant sur çelui ci 
@@ -76,11 +78,12 @@ export default class Tag {
 				filter.classList.add('selected');
 				input.classList.add('selected');
 				tagsContainer.classList.add('selected');
-				renderTag(input, tagsContainer, data);
+				filterTagList(input, tagsContainer, data);
+				filterContentByTag(input, tagsContainer);
 			});
 			// lorsque l'input est ouvert, il se ferme en cliquant en dehors
-			window.addEventListener('click', event => {
-				if (event.target.parentElement !== document.querySelector('.selected')) {
+			window.addEventListener('click', () => {
+				if (document.activeElement !== input) {
 					filter.classList.remove('selected');
 					input.classList.remove('selected');
 					tagsContainer.classList.remove('selected');
@@ -106,70 +109,90 @@ export default class Tag {
 				input.classList.contains('selected') ? input.focus() : '';
 			});
 			// compare les valeurs recherchées et affiche un tag
-			input.addEventListener('keyup', async () => {
-				renderTag(input, tagsContainer, data);
+			input.addEventListener('input', async () => {
+				filterTagList(input, tagsContainer, data);
+				filterContentByTag(input, tagsContainer);
 			});
 		};
+
 		//affiche les tags en fonction des mots qui sont insérés dans l'input
-		const renderTag = (input, tagsContainer, data) => {
+		const filterTagList = (input, tagsContainer, data) => {
 			tagsContainer.innerHTML = '';
-			let search = [];
-			if(input.value.length > 2) {
-				data.forEach(dataValue => {
-					if(dataValue.includes(input.value.toLowerCase())) {
-						search.push(dataValue);
-					}
-				});
-				if(search.length === 0) {
-					tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase()}</li>`;
-				}
-				else {
-					search.forEach(value => {
-						tagsContainer.innerHTML += `<li class='tag'>${value.charAt(0).toUpperCase() + value.slice(1)}</li>`;
-					});
-				}
+
+			let filteredSearch = [...data].filter(dataValue => dataValue.includes(input.value.toLowerCase().trim()) );
+
+			if(filteredSearch.length === 0) {
+				tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase()}</li>`;
 			} else {
-				data.forEach(dataValue => {
-					tagsContainer.innerHTML += `<li class='tag'>${dataValue.charAt(0).toUpperCase() + dataValue.slice(1)}</li>`;
+				filteredSearch.forEach(value => {
+					tagsContainer.innerHTML += `<li class='tag'>${value.charAt(0).toUpperCase() + value.slice(1)}</li>`;
 				});
 			}
-			const tags = tagsContainer.querySelectorAll('li');
-			tags.forEach(tag => {
-				tag.addEventListener('click', async ()=> {
-					const tagValue = tag.textContent.toLowerCase();
-					const template = document.createElement('div');
-					template.classList.add(`tag-${input.placeholder}`);
-					template.innerHTML = `${tag.textContent}<i class="fa-regular fa-circle-xmark"></i>`;
-					document.querySelector('.tags').appendChild(template);
+		};
+
+		const filterContentByTag = (input, tagsContainer) => {
+			const tagsList = tagsContainer.querySelectorAll('li');
+			tagsList.forEach(tagElement => {
+				tagElement.addEventListener('click', async () => {
+					renderTag(input, tagElement);
 					document.querySelector('.recipes').innerHTML = '';
-					let tagValues = await this.filter.checkValue(tagValue);
-					console.log(tagValues);
+					const tagValue = tagElement.textContent.toLowerCase();
 					
-					tagValues.forEach(value => {
+					let filteredDataByTagValues = await checkTagsValue(tagValue);
+					console.log(filteredDataByTagValues);
+					
+					filteredDataByTagValues.forEach(value => {
 						const ingredientsIncludeSearchedValue = value.recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(tagValue));
 						if(value.recipe.appliance.includes(tagValue) || value.recipe.description.includes(tagValue) || ingredientsIncludeSearchedValue){
-							tagValues.push(new RecipeCard(tagValue));
+							filteredDataByTagValues.push(new RecipeCard(tagValue));
 						}						
 					});
-					// tagValues.reduce((previousValue, currentValue) => {
-					// 	console.log(previousValue);
-					// 	if(tagValues.includes(currentValue && previousValue)){
-					// 		tagValues.push(currentValue);
-					// 	}
-					// }, '');
-
-					// fermer le tag en cliquant sur l'icon X
-					const closeIcon = template.querySelector('i');
-					closeIcon.addEventListener('click', () => {
-						closeIcon.parentElement.remove();
-					});
+					
 				});
 			});
+		};
+
+		const renderTag = (input, tagElement) => {
+			const tag = document.createElement('div');
+			tag.classList.add(`tag-${input.placeholder}`);
+			tag.innerHTML = `${tagElement.textContent}<i class="fa-regular fa-circle-xmark"></i>`;
+			document.querySelector('.tags').appendChild(tag);
+			// fermer le tag en cliquant sur l'icon X
+			const closeIcon = tag.querySelector('i');
+			closeIcon.addEventListener('click', () => {
+				closeIcon.parentElement.remove();
+			});
+		};
+
+		const  checkTagsValue = async (searchedValue) => {
+			const recipes = await this.data;
+			// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
+			let template = recipes.filter(recipe => 
+				recipe.name.toLowerCase().includes(searchedValue) 
+				|| recipe.appliance.toLowerCase().includes(searchedValue) 
+				|| recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(searchedValue)) 
+				|| recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue)) 
+			);
+			
+			template = template.map(el => new RecipeCard(el));
+		
+			// efface les recettes présentes puis: si le tableau de correspondance est vide => affiche 'aucun résultat trouvé.', sinon affiche les resultats trouvé via RecipeCard.createCard()
+			this.cardWrapper.innerHTML = '';
+	
+			if(template.length == 0) {
+				this.cardWrapper.textContent = 'aucun résultat trouvé';
+			} else {
+				template.forEach(el => {
+					this.cardWrapper.appendChild(el.createCard());
+				});
+			}
+			
+			return template;
 		};
 		
 		renderValuesAndBindEvent(ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
 		renderValuesAndBindEvent(appareils, appareilsTagsContainer, appareilsFilter, appareilsInput, appareilsIcon);
-		renderValuesAndBindEvent(ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustencilesIcon);
+		renderValuesAndBindEvent(ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustensilesIcon);
 
 	}
 	
