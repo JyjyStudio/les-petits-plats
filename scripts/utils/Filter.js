@@ -21,30 +21,28 @@ export default class Filter {
 	
 	getCompareValueFromSearchBar() {
 		const form = document.getElementById('search-form');
+		const searchBarInput = document.querySelector('form .search-bar');
+
 		form.addEventListener('submit', (e) => {
 			e.preventDefault();
-			const searchBarValue = document.querySelector('form .search-bar').value.toLowerCase();
-			this.cardWrapper.innerHTML = '';
-			this.checkValue(searchBarValue);
 		});
 
-		const searchInput = document.querySelector('form .search-bar');
-		searchInput.addEventListener('input', (e) => {
+		searchBarInput.addEventListener('keyup', (e) => {
 			// console.time('search');
-			
-			const searchedValue = searchInput.value.toLowerCase();
-			
+			const searchedValue = searchBarInput.value.toLowerCase().trim();
 			if(e.keyCode !== 13 && searchedValue.length >=3) {
-				this.checkValue(searchedValue);
-			}else {
+				e.stopImmediatePropagation(); //évite d'executer 2 fois la ligne suivante
+				this.checkSearchBarValue(searchedValue);
+			} 
+			if(searchedValue.length == 2 || searchedValue.length == 0) {
+				e.stopImmediatePropagation();
 				this.displayAllRecipes();
 			}
-
 			// console.timeEnd('search');
 		});
 	}
 
-	async checkValue(searchedValue) {
+	async checkSearchBarValue(searchedValue) {
 		const recipes = await this.data;
 		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
 		let template = recipes.filter(recipe => 
@@ -58,7 +56,7 @@ export default class Filter {
 	
 		// efface les recettes présentes puis: si le tableau de correspondance est vide => affiche 'aucun résultat trouvé.', sinon affiche les resultats trouvé via RecipeCard.createCard()
 		this.cardWrapper.innerHTML = '';
-		
+
 		if(template.length == 0) {
 			this.cardWrapper.textContent = 'aucun résultat trouvé';
 		} else {
