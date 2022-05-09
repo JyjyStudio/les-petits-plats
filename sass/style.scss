@@ -223,6 +223,11 @@ header {
 		grid-template-columns: 1fr;
 		margin: 240px 0 50px;
 	}
+	.not-found {
+		width: 80vw;
+		text-align: justify;
+		line-height: 1.3;
+	}
 }
 .recipe-card {
 	height: 400px;
