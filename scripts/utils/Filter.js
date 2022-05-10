@@ -58,7 +58,7 @@ export default class Filter {
 		this.cardWrapper.innerHTML = '';
 
 		if(template.length == 0) {
-			this.cardWrapper.textContent = 'aucun résultat trouvé';
+			this.cardWrapper.innerHTML = '<p class="not-found">Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..</p>';
 		} else {
 			template.forEach(el => {
 				this.cardWrapper.appendChild(el.createCard());
