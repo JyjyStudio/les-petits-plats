@@ -180,7 +180,7 @@ export default class Tag {
 			this.cardWrapper.innerHTML = '';
 	
 			if(template.length == 0) {
-				this.cardWrapper.textContent = 'aucun résultat trouvé';
+				this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
 			} else {
 				template.forEach(el => {
 					this.cardWrapper.appendChild(el.createCard());
