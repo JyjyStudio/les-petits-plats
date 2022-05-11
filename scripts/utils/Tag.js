@@ -6,32 +6,26 @@ export default class Tag {
 	constructor() {
 		this.data = new RecipesApi('data/recipes.json').getRecipes();
 		this.cardWrapper = document.querySelector('main .recipes');
+		this.searchBar = document.getElementById('search');
+		// this.currentRepices = [];
+		this.labels = {
+			ingredients: new Set(),
+			appareils: new Set(),
+			ustensiles: new Set()
+		};
 		this.filter = new Filter();
 	}
 
-	async getData() {
+	async displayTags() {
 		const data = await this.data;
-		let ingredients = [];
-		let appareils = [];
-		let ustensiles = [];
 
 		data.forEach(recipe => {
-			recipe.appliance ? appareils.push(recipe.appliance.toLowerCase()) : '';
-			recipe.ingredients.forEach(ingredient => ingredients.push(ingredient.ingredient.toLowerCase()));
-			recipe.ustensils.forEach(ustensil => ustensiles.push(ustensil.toLowerCase()));
+			recipe.appliance ? this.labels.appareils.add(recipe.appliance.toLowerCase()) : '';
+			recipe.ingredients.forEach(ingredient => this.labels.ingredients.add(ingredient.ingredient.toLowerCase()));
+			recipe.ustensils.forEach(ustensil => this.labels.ustensiles.add(ustensil.toLowerCase()));
 		});
-
-		ingredients = new Set(ingredients);
-		appareils = new Set(appareils);
-		ustensiles = new Set(ustensiles);
-
-		return {appareils, ingredients, ustensiles};
-	}
-
-	async displayTags() {
-
-		const {appareils, ingredients, ustensiles} = await this.getData();
-
+		console.log(this.labels);
+		
 		const ingredientsTagsContainer = document.querySelector('.filtre-ingredients-content');
 		const appareilsTagsContainer = document.querySelector('.filtre-appareils-content');
 		const ustensilesTagsContainer = document.querySelector('.filtre-ustensiles-content');
@@ -51,13 +45,14 @@ export default class Tag {
 
 		/**
 		 * Récupere la data, et affiche les tags. puis gère les evenements via la fonction styliseInputOnClick()
-		 * @param {Array} data - tébleau d'objets qui contient toute la data qui provient du fichier json 
+		 * @param {Array} data - tableau d'objets qui contient toute la data qui provient du fichier json 
 		 * @param {HTMLElement} tagsContainer - container de tous les tags
 		 * @param {HTMLElement} filter - container global de chaque filtre
 		 * @param {HTMLElement} input - l'input de chaque filtre
 		 * @param {HTMLElement} icon - icone à droite de l'input qui permet d'ouvrir ou de fermer la liste des tags
 		 */
 		const renderValuesAndBindEvent = (data, tagsContainer, filter, input, icon) => {
+			console.log(data);
 			data.forEach(dataValue => {
 				tagsContainer.innerHTML += `<li class='tag'>${dataValue.charAt(0).toUpperCase() + dataValue.slice(1)}</li>`;
 			});
@@ -119,7 +114,9 @@ export default class Tag {
 		const filterTagList = (input, tagsContainer, data) => {
 			tagsContainer.innerHTML = '';
 
-			let filteredSearch = [...data].filter(dataValue => dataValue.includes(input.value.toLowerCase().trim()) );
+			let filteredSearch = [...data].filter(dataValue => dataValue.includes(input.value.toLowerCase().trim()));
+			// .filter(el => el.includes(this.searchBar.value.toLowerCase().trim()));
+			// console.log(filteredSearch);
 
 			if(filteredSearch.length === 0) {
 				tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase()}</li>`;
@@ -146,8 +143,7 @@ export default class Tag {
 						if(value.recipe.appliance.includes(tagValue) || value.recipe.description.includes(tagValue) || ingredientsIncludeSearchedValue){
 							filteredDataByTagValues.push(new RecipeCard(tagValue));
 						}						
-					});
-					
+					});			
 				});
 			});
 		};
@@ -190,9 +186,9 @@ export default class Tag {
 			return template;
 		};
 		
-		renderValuesAndBindEvent(ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
-		renderValuesAndBindEvent(appareils, appareilsTagsContainer, appareilsFilter, appareilsInput, appareilsIcon);
-		renderValuesAndBindEvent(ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustensilesIcon);
+		renderValuesAndBindEvent(this.labels.ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
+		renderValuesAndBindEvent(this.labels.appareils, appareilsTagsContainer, appareilsFilter, appareilsInput, appareilsIcon);
+		renderValuesAndBindEvent(this.labels.ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustensilesIcon);
 
 	}
 	
