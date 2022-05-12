@@ -8,10 +8,13 @@ class Api {
 	}
 
 	async get() {
-		return fetch(this.url)
-			.then(res => res.json())
-			.then(res => res.recipes)
-			.catch(err => console.error('an error occurs', err));
+		try {
+			const res = await fetch(this.url);
+			const res_1 = await res.json();
+			return res_1.recipes;
+		} catch (err) {
+			return console.error('an error occurs', err);
+		}
 	}
 }
 
@@ -23,8 +26,7 @@ export default class RecipesApi extends Api {
 	constructor(url) {
 		super(url);
 	}
-
-	async getRecipes() {
-		return await this.get();
+	getRecipes() {
+		return this.get();
 	}
 }
