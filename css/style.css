@@ -147,6 +147,11 @@ header h1 {
   transform: rotate(180deg);
   transition: transform 0.3s ease-in-out 0.2s;
 }
+.filtres #filtre-ingredients,
+.filtres #filtre-appareils,
+.filtres #filtre-ustensiles {
+  /*scrollbar des tags*/
+}
 .filtres #filtre-ingredients input,
 .filtres #filtre-appareils input,
 .filtres #filtre-ustensiles input {
@@ -171,6 +176,21 @@ header h1 {
 .filtres #filtre-appareils input::placeholder,
 .filtres #filtre-ustensiles input::placeholder {
   color: #fff;
+}
+.filtres #filtre-ingredients:hover .filtre-ingredients-content::-webkit-scrollbar-thumb,
+.filtres #filtre-appareils:hover .filtre-ingredients-content::-webkit-scrollbar-thumb,
+.filtres #filtre-ustensiles:hover .filtre-ingredients-content::-webkit-scrollbar-thumb {
+  background-color: #0966ed;
+}
+.filtres #filtre-ingredients:hover .filtre-appareils-content::-webkit-scrollbar-thumb,
+.filtres #filtre-appareils:hover .filtre-appareils-content::-webkit-scrollbar-thumb,
+.filtres #filtre-ustensiles:hover .filtre-appareils-content::-webkit-scrollbar-thumb {
+  background-color: #3fcf8b;
+}
+.filtres #filtre-ingredients:hover .filtre-ustensiles-content::-webkit-scrollbar-thumb,
+.filtres #filtre-appareils:hover .filtre-ustensiles-content::-webkit-scrollbar-thumb,
+.filtres #filtre-ustensiles:hover .filtre-ustensiles-content::-webkit-scrollbar-thumb {
+  background-color: #e83a26;
 }
 .filtres #filtre-ingredients .selected,
 .filtres #filtre-appareils .selected,
@@ -213,6 +233,16 @@ header h1 {
   display: grid;
   height: 16rem;
 }
+.filtres .filtre-ingredients-content.selected::-webkit-scrollbar,
+.filtres .filtre-appareils-content.selected::-webkit-scrollbar,
+.filtres .filtre-ustensiles-content.selected::-webkit-scrollbar {
+  width: 12px;
+}
+.filtres .filtre-ingredients-content.selected::-webkit-scrollbar-thumb,
+.filtres .filtre-appareils-content.selected::-webkit-scrollbar-thumb,
+.filtres .filtre-ustensiles-content.selected::-webkit-scrollbar-thumb {
+  height: 50px;
+}
 @media screen and (max-width: 800px) {
   .filtres .filtre-ingredients-content.selected,
 .filtres .filtre-appareils-content.selected,
@@ -241,6 +271,7 @@ header h1 {
 }
 .filtres #filtre-appareils input, .filtres #filtre-appareils .filtre-appareils-content {
   background-color: #68D9A4;
+  grid-template-rows: 60px 60px 60px;
 }
 .filtres #filtre-ustensiles input, .filtres #filtre-ustensiles .filtre-ustensiles-content {
   background-color: #ED6454;
