@@ -154,6 +154,18 @@ header {
 				color: #fff;
 			}
 		}
+		/*scrollbar des tags*/
+		&:hover {
+			.filtre-ingredients-content::-webkit-scrollbar-thumb {
+				background-color: darken(#3282F7, 10%); 
+			}
+			.filtre-appareils-content::-webkit-scrollbar-thumb {
+				background-color: darken(#68D9A4, 10%); 
+			}
+			.filtre-ustensiles-content::-webkit-scrollbar-thumb {
+				background-color: darken(#ED6454, 10%); 
+			}
+		}
 		.selected {
 			width: 600px;
 			@include mobiles {
@@ -180,6 +192,12 @@ header {
 		&.selected {
 			display: grid;
 			height: 16rem;
+			&::-webkit-scrollbar {
+				width: 12px;
+			}
+			&::-webkit-scrollbar-thumb {
+				height: 50px;
+			}
 			@include mobiles {
 				display: flex;
 				flex-direction: column;
@@ -205,6 +223,7 @@ header {
 	#filtre-appareils{
 		input, .filtre-appareils-content {
 			background-color: #68D9A4;
+			grid-template-rows: 60px 60px 60px;
 		}
 	}
 	#filtre-ustensiles{
