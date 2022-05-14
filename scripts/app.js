@@ -15,7 +15,7 @@ class App {
 		
 		this.filter;
 
-		this.tag.displayTags();
+		this.tag.filterTags();
 		
 	}
 }
