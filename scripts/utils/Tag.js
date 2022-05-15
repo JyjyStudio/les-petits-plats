@@ -62,7 +62,7 @@ export default class Tag {
 				input.classList.add('selected');
 				tagsContainer.classList.add('selected');
 				clearLabels();
-				show_filterTagList(input, tagsContainer, data);
+				show_filter_TagList(input, tagsContainer, data);
 				renderTag_filterRecipes(input, tagsContainer);
 			});
 
@@ -83,7 +83,7 @@ export default class Tag {
 			// compare les mots recherchés et affiche les tags par rapport à ces mots clés
 			input.addEventListener('input', () => {
 				clearLabels();
-				show_filterTagList(input, tagsContainer, data);
+				show_filter_TagList(input, tagsContainer, data);
 				renderTag_filterRecipes(input, tagsContainer);
 			});
 		};
@@ -105,58 +105,81 @@ export default class Tag {
 			}
 		};
 
-		// affiche les tags en fonction des mots qui sont recherchés dans l'input
-		const show_filterTagList = (input, tagsContainer) => {
+		// affiche les tags en fonction des mots qui sont recherchés dans la barre de recherche principale, et affine la liste des tags avec les mots recherchés dans les filtres avancés
+		const show_filter_TagList = (input, tagsContainer) => {
 
 			tagsContainer.innerHTML = '';
-			const searchedValue = input.value.toLowerCase();
-			const filteredSearch = new Set();
+			const searchbarValue = this.searchBar.value.toLowerCase();
+			const searchtagValue = input.value.toLowerCase();
+			let filteredTagsBySearchbar = new Set();
+			let filteredTagsBySearchtag = new Set();
 
-			[...this.currentIndex].map(index => [...this.data][index]).forEach(recipe => filteredSearch.add(recipe));
+			[...this.currentIndex].map(index => [...this.data][index]).forEach(recipe => filteredTagsBySearchbar.add(recipe));
 
-			[...filteredSearch].filter(recipe => recipe.name.toLowerCase().includes(searchedValue) 
-												|| recipe.appliance.toLowerCase().includes(searchedValue) 
-												|| recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(searchedValue)) 
-												|| recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue))
+			filteredTagsBySearchbar = [...filteredTagsBySearchbar].filter(recipe => recipe.name.toLowerCase().includes(searchbarValue) 
+				|| recipe.appliance.toLowerCase().includes(searchbarValue) 
+				|| recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(searchbarValue)) 
+				|| recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchbarValue))
 			);
-			console.log([...filteredSearch]);
 
-			if([...filteredSearch].length) {
+			if(filteredTagsBySearchbar.length) {
 				switch (tagsContainer.id) {
 				case 'labels-ingredients':
-					[...filteredSearch].forEach(recipe => {
+					filteredTagsBySearchbar.forEach(recipe => {
 						recipe.ingredients.forEach(ingredient => {
 							this.labels.ingredients.add(ingredient.ingredient.toLowerCase());
+							[...this.labels.ingredients].forEach(ingredient => ingredient.includes(searchtagValue) ? filteredTagsBySearchtag.add(ingredient) : '');
 						});
 					});
-					[...this.labels.ingredients].forEach(ingredient => {
-						tagsContainer.innerHTML += `<li class='tag'>${ingredient.charAt(0).toUpperCase() + ingredient.slice(1)}</li>`;
-					});
+					if([...filteredTagsBySearchtag].length) {
+						filteredTagsBySearchtag.forEach(ingredient => {
+							tagsContainer.innerHTML += `<li class='tag'>${ingredient.charAt(0).toUpperCase() + ingredient.slice(1)}</li>`;
+						});
+						tagsContainer.classList.remove('not-found');
+					} else {
+						tagsContainer.classList.add('not-found');
+						tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
+					}
 					break;
 				case 'labels-appareils':
-					[...filteredSearch].forEach(recipe => {
+					filteredTagsBySearchbar.forEach(recipe => {
 						this.labels.appareils.add(recipe.appliance.toLowerCase());
+						this.labels.appareils.forEach(appliance => appliance.includes(searchtagValue) ? filteredTagsBySearchtag.add(appliance) : '');
 					});
-					[...this.labels.appareils].forEach(appliance => {
-						tagsContainer.innerHTML += `<li class='tag'>${appliance.charAt(0).toUpperCase() + appliance.slice(1)}</li>`;
-					});
+					if([...filteredTagsBySearchtag].length) {
+						this.labels.appareils.forEach(appliance => {
+							tagsContainer.innerHTML += `<li class='tag'>${appliance.charAt(0).toUpperCase() + appliance.slice(1)}</li>`;
+						});
+						tagsContainer.classList.remove('not-found');
+					} else {
+						tagsContainer.classList.add('not-found');
+						tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
+					}
 					break;
 				case 'labels-ustensiles':
-					[...filteredSearch].forEach(recipe => {
+					filteredTagsBySearchbar.forEach(recipe => {
 						recipe.ustensils.forEach(ustensile => {
 							this.labels.ustensiles.add(ustensile.toLowerCase());
+							[...this.labels.ustensiles].forEach(ustensile => ustensile.includes(searchtagValue) ? filteredTagsBySearchtag.add(ustensile) : '');
 						});
 					});
-					[...this.labels.ustensiles].forEach(ustensile => {
-						tagsContainer.innerHTML += `<li class='tag'>${ustensile.charAt(0).toUpperCase() + ustensile.slice(1)}</li>`;
-					});
+					if([...filteredTagsBySearchtag].length) {
+						filteredTagsBySearchtag.forEach(ustensile => {
+							tagsContainer.innerHTML += `<li class='tag'>${ustensile.charAt(0).toUpperCase() + ustensile.slice(1)}</li>`;
+						});
+						tagsContainer.classList.remove('not-found');
+					} else {
+						tagsContainer.classList.add('not-found');
+						tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
+					}
 					break;
 				default:
 					console.log('type de label inexistant');
 					break;
 				}
 			} else {
-				tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase()}</li>`;
+				tagsContainer.classList.add('not-found');
+				tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
 			}
 		};
 
