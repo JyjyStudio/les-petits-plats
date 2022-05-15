@@ -189,6 +189,9 @@ header {
 		color: #fff;
 		overflow: hidden;
     	border-radius: 0 0 5px 5px;
+		&.not-found {
+			grid-template-columns: 1fr;
+		}
 		&.selected {
 			display: grid;
 			height: 16rem;
