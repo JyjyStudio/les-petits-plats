@@ -227,6 +227,11 @@ header h1 {
   overflow: hidden;
   border-radius: 0 0 5px 5px;
 }
+.filtres .filtre-ingredients-content.not-found,
+.filtres .filtre-appareils-content.not-found,
+.filtres .filtre-ustensiles-content.not-found {
+  grid-template-columns: 1fr;
+}
 .filtres .filtre-ingredients-content.selected,
 .filtres .filtre-appareils-content.selected,
 .filtres .filtre-ustensiles-content.selected {
