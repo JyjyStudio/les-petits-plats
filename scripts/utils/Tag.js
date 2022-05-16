@@ -6,12 +6,17 @@ export default class Tag {
 		this.data = new Set();
 		this.cardWrapper = document.querySelector('main .recipes');
 		this.searchBar = document.getElementById('search');
-		// this.currentRepices = [];
+		this.currentRecipes = new Set();
 		this.currentIndex = new Set();
 		this.labels = {
 			ingredients: new Set(),
 			appareils: new Set(),
 			ustensiles: new Set()
+		};
+		this.currentTags = {
+			ingredients : [],
+			appliances : [], 
+			ustensils : []
 		};
 	}
 
@@ -21,14 +26,12 @@ export default class Tag {
 		data.forEach(recipe => {
 			this.data.add(recipe);
 		});
-		// parcours la data et ajoute à this.labels chaque ingrédient, appareil, ustensile et index (de chaque element) pour les afficher plus tard dans les tags
-		[...this.data].forEach((recipe, index) => {
-			this.currentIndex.add(index);
+		// parcours la data et ajoute à this.labels chaque ingrédient, appareil, ustensile
+		[...this.data].forEach(recipe => {
 			recipe.appliance ? this.labels.appareils.add(recipe.appliance.toLowerCase()) : '';
 			recipe.ingredients.forEach(ingredient => this.labels.ingredients.add(ingredient.ingredient.toLowerCase()));
 			recipe.ustensils.forEach(ustensil => this.labels.ustensiles.add(ustensil.toLowerCase()));
 		});
-		console.log(this.labels, this.currentIndex);
 		
 		const ingredientsTagsContainer = document.querySelector('.filtre-ingredients-content');
 		const appareilsTagsContainer = document.querySelector('.filtre-appareils-content');
@@ -114,7 +117,7 @@ export default class Tag {
 			let filteredTagsBySearchbar = new Set();
 			let filteredTagsBySearchtag = new Set();
 
-			[...this.currentIndex].map(index => [...this.data][index]).forEach(recipe => filteredTagsBySearchbar.add(recipe));
+			[...this.data].forEach(recipe => filteredTagsBySearchbar.add(recipe));
 
 			filteredTagsBySearchbar = [...filteredTagsBySearchbar].filter(recipe => recipe.name.toLowerCase().includes(searchbarValue) 
 				|| recipe.appliance.toLowerCase().includes(searchbarValue) 
@@ -183,21 +186,42 @@ export default class Tag {
 			}
 		};
 
+
 		const renderTag_filterRecipes = (input, tagsContainer) => {
 			const tagsList = tagsContainer.querySelectorAll('li');
 			tagsList.forEach(tagElement => {
-				tagElement.addEventListener('click', () => {
+				tagElement.addEventListener('click', (e) => {
 					//on crée le tag
 					const tag = document.createElement('div');
 					tag.classList.add(`tag-${input.placeholder}`);
 					tag.innerHTML = `${tagElement.textContent}<i class="fa-regular fa-circle-xmark"></i>`;
 					document.querySelector('.tags').appendChild(tag);
+					this.addCurrentTags(input.placeholder, tagElement.textContent);
+					console.log(this.currentTags);
 					// on vide les résultats et récupère la valeur du mot clé recherché
 					document.querySelector('.recipes').innerHTML = '';
 					const tagValue = tagElement.textContent.toLowerCase();
 					// non terminé : on filtre les résultats en fonction du/des mot(s) clé(s) 
-					let filteredDataByTagValues =  checkTagsValue_FilterRecipes(tagValue);
-					console.log(filteredDataByTagValues);
+					const matchRecipes = checkTagsValue_FilterRecipes();
+					switch (e.target.parentElement.id) {
+					case 'labels-ingredients':
+						Object.values(matchRecipes).filter(recipe => {
+							console.log(recipe);
+							let test = recipe.ingredients.map(ingredient => !ingredient.ingredient.includes(tagValue));
+							console.log(test);
+						});
+						break;
+					case 'labels-ustensiles':
+						console.log('input-ustensiles');
+						break;
+					case 'labels-appareils':
+						console.log('input-appareils');
+						break;
+				
+					default:
+						break;
+					}
+					// checkTagsValue_FilterRecipes();
 					// on retire le tag en cliquant sur l'icon X
 					const closeIcon = tag.querySelector('i');
 					closeIcon.addEventListener('click', () => {
@@ -206,25 +230,68 @@ export default class Tag {
 				});
 			});
 		};
-
-		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
-		const  checkTagsValue_FilterRecipes = (searchedValue) => {
-			const recipes = this.data;
-			let template = [...recipes].filter((recipe, index) => {
-				if(recipe.name.toLowerCase().includes(searchedValue) 
-				|| recipe.appliance.toLowerCase().includes(searchedValue) 
-				|| recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(searchedValue)) 
-				|| recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue))) {
-					this.currentIndex.add(index);
-					return true;
-				} else return false;
-			});
-
-			template = template.map(el => new RecipeCard(el));
 		
-			// efface les recettes présentes puis: si le tableau de correspondance est vide => affiche 'aucun résultat trouvé.', sinon affiche les resultats trouvé via RecipeCard.createCard()
+		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
+		const checkTagsValue_FilterRecipes = () => {
+			const cards = [...this.data].reduce((matchRecipes, currentRecipe) => {
+
+				Object.keys(this.currentTags).reduce((acc, currentTagCategory) => {
+					// console.log(currentTagCategory);
+					let matchIngredients, matchAppliances, matchUstensils;
+					// console.log(acc);
+					switch (currentTagCategory) {
+					case 'ingredients':
+						this.currentTags.ingredients.map(tagIngredient => {
+							currentRecipe.ingredients.map(currentRecipeIngredient => {
+								if (currentRecipeIngredient.ingredient.toLowerCase() == tagIngredient.toLowerCase()) {
+									matchIngredients = true;
+									// acc.push(currentRecipe);
+									// console.log({matchIngredients});
+									// acc.push(currentRecipeIngredient.ingredient);
+									// console.log({acc});
+								}
+							});
+						});
+						break;
+					case 'appliances':
+						this.currentTags.appliances.map((currentTagAppliance) => {
+							if (currentRecipe.appliance == currentTagAppliance) {
+								matchAppliances = true;
+								// console.log({matchAppliances});
+								// acc.push(currentRecipe.appliance);
+								// return acc;
+							}
+						});
+						break;
+					case 'ustensils':
+						this.currentTags.ustensils.map((currentTagUstensil) => {
+							currentRecipe.ustensils.map((currentRecipeUstensil) => {
+								if (currentRecipeUstensil.toLowerCase() == currentTagUstensil) {
+									matchUstensils = true;
+									// console.log({matchUstensils});
+									// acc.push(currentRecipeUstensil.toLowerCase());
+									// return acc;
+								}
+							});
+						});
+						break;
+					}
+					// console.log(matchIngredients ?? matchAppliances ?? matchUstensils);
+					if(matchIngredients ?? matchAppliances ?? matchUstensils) {
+						console.error('all Match');
+						matchRecipes.push(currentRecipe);
+						return matchRecipes;
+						
+					}
+					// console.log(acc);
+					return acc;
+				}, []);
+				
+				return matchRecipes;
+				
+			}, []);
 			this.cardWrapper.innerHTML = '';
-	
+			let template = cards.map(el=>new RecipeCard(el));
 			if(template.length == 0) {
 				this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
 			} else {
@@ -232,14 +299,61 @@ export default class Tag {
 					this.cardWrapper.appendChild(el.createCard());
 				});
 			}
-			
-			return template;
+			console.log(cards);
+			return cards;
+			// let template = [...this.data].filter(recipe => {
+			// 	if(recipe.name.toLowerCase().includes(tagValue) 
+			// 	|| recipe.appliance.toLowerCase().includes(tagValue) 
+			// 	|| recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(tagValue)) 
+			// 	|| recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(tagValue))) {
+			// 		this.currentIndex.add((recipe.id)-1);
+			// 		return true;
+			// 	} else return false;
+			// });
+
+			// // console.log(this.currentIndex, this.data);
+			// [...this.currentIndex].forEach(id => this.currentRecipes.add([...this.data][id]));
+			// console.log(template, this.currentRecipes);
+			// template = [...this.currentRecipes].map(el => new RecipeCard(el));
+		
+			// // efface les recettes présentes puis: si le tableau de correspondance est vide => affiche 'aucun résultat trouvé.', sinon affiche les resultats trouvé via RecipeCard.createCard()
+			// this.cardWrapper.innerHTML = '';
+	
+			// if(template.length == 0) {
+			// 	this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
+			// } else {
+			// 	template.forEach(el => {
+			// 		this.cardWrapper.appendChild(el.createCard());
+			// 	});
+			// }
+			// return template;
 		};
 		
 		listenInput(this.labels.ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
 		listenInput(this.labels.appareils, appareilsTagsContainer, appareilsFilter, appareilsInput, appareilsIcon);
 		listenInput(this.labels.ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustensilesIcon);
-
 	}
-	
+
+	addCurrentTags = (currentInputPlaceholder, tagContent) => {
+		let category;
+		switch (currentInputPlaceholder) {
+		case 'Ingrédients':
+			category = 'ingredients';
+			break;
+		case 'Appareils':
+			category = 'appliances';
+			break;
+		case 'Ustensiles':
+			category = 'ustensils';
+			tagContent = tagContent.toLowerCase();
+			break;
+		default:
+			break;
+		}
+		if(this.currentTags[category].includes(tagContent)) {
+			return;
+		} else {
+			this.currentTags[category].push(tagContent);
+		}
+	};
 }
