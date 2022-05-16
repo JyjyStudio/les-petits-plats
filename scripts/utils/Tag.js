@@ -203,12 +203,17 @@ export default class Tag {
 					const tagValue = tagElement.textContent.toLowerCase();
 					// non terminé : on filtre les résultats en fonction du/des mot(s) clé(s) 
 					const matchRecipes = checkTagsValue_FilterRecipes();
+					let template = [];
 					switch (e.target.parentElement.id) {
 					case 'labels-ingredients':
-						Object.values(matchRecipes).filter(recipe => {
+						Object.values(matchRecipes).forEach(recipe => {
 							console.log(recipe);
-							let test = recipe.ingredients.map(ingredient => !ingredient.ingredient.includes(tagValue));
-							console.log(test);
+							recipe.ingredients.forEach(ingredient => {
+								if(ingredient.ingredient.toLowerCase().includes(tagValue)) {
+									template.push(recipe);
+								}
+							});
+							console.log(template);
 						});
 						break;
 					case 'labels-ustensiles':
