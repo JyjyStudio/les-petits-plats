@@ -197,26 +197,12 @@ export default class Tag {
 					tag.innerHTML = `${tagElement.textContent}<i class="fa-regular fa-circle-xmark"></i>`;
 					document.querySelector('.tags').appendChild(tag);
 					this.addCurrentTags(input.placeholder, tagElement.textContent);
-					// console.log(this.currentTags);
+					console.log(this.currentTags);
 					// on vide les résultats et récupère la valeur du mot clé recherché
 					document.querySelector('.recipes').innerHTML = '';
-					const tagValue = tagElement.textContent.toLowerCase();
+					// const tagValue = tagElement.textContent.toLowerCase();
 					// non terminé : on filtre les résultats en fonction du/des mot(s) clé(s) 
-					const matchCards = checkTagsValue_FilterRecipes(tagValue);
-					console.log({matchCards});
-					let matchRecipes = matchCards.filter(recipe => {
-						return recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(tagValue) ? true : false);
-					});
-					console.log({matchRecipes});
-					this.cardWrapper.innerHTML = '';
-					let template = matchRecipes.map(el=>new RecipeCard(el));
-					if(template.length == 0) {
-						this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
-					} else {
-						template.forEach(el => {
-							this.cardWrapper.appendChild(el.createCard());
-						});
-					}
+					checkTagsValue_FilterRecipes();
 					// on retire le tag en cliquant sur l'icon X
 					const closeIcon = tag.querySelector('i');
 					closeIcon.addEventListener('click', () => {
@@ -227,7 +213,7 @@ export default class Tag {
 		};
 		
 		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
-		const checkTagsValue_FilterRecipes = (tagValue) => {
+		const checkTagsValue_FilterRecipes = () => {
 			const cards = [...this.data].reduce((matchRecipes, currentRecipe) => {
 
 				Object.keys(this.currentTags).reduce((acc, currentTagCategory) => {
@@ -238,11 +224,8 @@ export default class Tag {
 					case 'ingredients':
 						this.currentTags.ingredients.map(tagIngredient => {
 							currentRecipe.ingredients.map(currentRecipeIngredient => {
-								// if (currentRecipeIngredient.ingredient.toLowerCase() == tagIngredient.toLowerCase()) {
-								if(currentRecipeIngredient.ingredient.toLowerCase().includes(tagValue)) {
+								if (currentRecipeIngredient.ingredient.toLowerCase() == tagIngredient.toLowerCase()) {
 									matchIngredients = true;
-									acc.push(currentRecipe);
-									// }
 									// acc.push(currentRecipe);
 									// console.log({matchIngredients});
 									// acc.push(currentRecipeIngredient.ingredient);
@@ -255,9 +238,6 @@ export default class Tag {
 						this.currentTags.appliances.map((currentTagAppliance) => {
 							if (currentRecipe.appliance == currentTagAppliance) {
 								matchAppliances = true;
-								if(currentRecipe.appliance.toLowerCase().includes(tagValue)) {
-									acc.push(currentRecipe);
-								}
 								// console.log({matchAppliances});
 								// acc.push(currentRecipe.appliance);
 								// return acc;
@@ -269,9 +249,6 @@ export default class Tag {
 							currentRecipe.ustensils.map((currentRecipeUstensil) => {
 								if (currentRecipeUstensil.toLowerCase() == currentTagUstensil) {
 									matchUstensils = true;
-									if(currentRecipeUstensil.toLowerCase().includes(tagValue)) {
-										acc.push(currentRecipe);
-									}
 									// console.log({matchUstensils});
 									// acc.push(currentRecipeUstensil.toLowerCase());
 									// return acc;
@@ -281,39 +258,30 @@ export default class Tag {
 						break;
 					}
 					// console.log(matchIngredients ?? matchAppliances ?? matchUstensils);
-					if(matchIngredients) {
+					if(matchIngredients ?? matchAppliances ?? matchUstensils) {
 						console.error('all Match');
 						matchRecipes.push(currentRecipe);
-						// return matchRecipes;
+						return matchRecipes;
+						
 					}
 					// console.log(acc);
 					return acc;
 				}, []);
+				
 				return matchRecipes;
 				
 			}, []);
-			// let matchRecipes = cards.filter(recipe => {
-			// 	console.log(recipe);
-			// 	if(recipe.name.toLowerCase().includes(tagValue) 
-			// 	|| recipe.appliance.toLowerCase().includes(tagValue) 
-			// 	|| recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(tagValue)) 
-			// 	|| recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(tagValue))) {
-			// 		// template.push(recipe);
-			// 		return recipe;
-			// 	} else return false;
-			// });
-			// console.log(matchRecipes);
-			// this.cardWrapper.innerHTML = '';
-			// let template = matchRecipes.map(el=>new RecipeCard(el));
-			// if(template.length == 0) {
-			// 	this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
-			// } else {
-			// 	template.forEach(el => {
-			// 		this.cardWrapper.appendChild(el.createCard());
-			// 	});
-			// }
+			this.cardWrapper.innerHTML = '';
+			let template = cards.map(el=>new RecipeCard(el));
+			if(template.length == 0) {
+				this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
+			} else {
+				template.forEach(el => {
+					this.cardWrapper.appendChild(el.createCard());
+				});
+			}
 			console.log(cards);
-			return cards;
+			
 			// let template = [...this.data].filter(recipe => {
 			// 	if(recipe.name.toLowerCase().includes(tagValue) 
 			// 	|| recipe.appliance.toLowerCase().includes(tagValue) 
