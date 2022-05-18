@@ -260,46 +260,17 @@ export default class Tag {
 				
 			}, []);
 			this.cardWrapper.innerHTML = '';
-
-			// let template = filteredResult.map(el=>new RecipeCard(el));
-			// if(template.length == 0) {
-			// 	this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
-			// } else {
-			// 	template.forEach(el => {
-			// 		this.cardWrapper.appendChild(el.createCard());
-			// 	});
-			// }
-
+			let template = filteredResult.map(el=>new RecipeCard(el));
+			if(template.length == 0) {
+				this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
+			} else {
+				template.forEach(el => {
+					this.cardWrapper.appendChild(el.createCard());
+				});
+			}
 			// console.log('this.currentTags', this.currentTags);
 			console.log({filteredResult});
-			let template = new Set();
-			filteredResult.map(matchRecipe => {
-				this.currentTags.ingredients.forEach(tagIngredient=> {
-					matchRecipe.ingredients.forEach(recipeIngredient => {
-						if(recipeIngredient.ingredient.toLowerCase().includes(tagIngredient.toLowerCase())) {
-							console.log(matchRecipe);
-							template.add(matchRecipe);
-						}
-					});
-				});
-			});
-			console.log(template);
-			// let template = filteredResult.map(matchRecipe => {
-			// 	this.currentTags.ingredients.forEach(tagIngredient=> {
-			// 		matchRecipe.ingredients.forEach(recipeIngredient => {
-			// 			if(recipeIngredient.ingredient.toLowerCase().includes(tagIngredient.toLowerCase())) {
-			// 				console.log(matchRecipe);
-			// 				return true;
-			// 			} else return false;
-			// 		});
-			// 	});
-				// this.currentTags.appliances.forEach(tag=> {
-				// 	console.log(tag);
-				// });
-				// this.currentTags.ustensils.forEach(tag=> {
-				// 	console.log(tag);
-				// });
-				
+			// let template = [...this.data].filter(recipe => {
 			// 	if(recipe.name.toLowerCase().includes(tagValue) 
 			// 	|| recipe.appliance.toLowerCase().includes(tagValue) 
 			// 	|| recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(tagValue)) 
@@ -308,7 +279,7 @@ export default class Tag {
 			// 		return true;
 			// 	} else return false;
 			// });
-			// console.log(template);
+
 			// // console.log(this.currentIndex, this.data);
 			// [...this.currentIndex].forEach(id => this.currentRecipes.add([...this.data][id]));
 			// console.log(template, this.currentRecipes);
@@ -326,6 +297,7 @@ export default class Tag {
 			// }
 			// return template;
 		};
+		
 		listenInput(this.labels.ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
 		listenInput(this.labels.appareils, appareilsTagsContainer, appareilsFilter, appareilsInput, appareilsIcon);
 		listenInput(this.labels.ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustensilesIcon);
