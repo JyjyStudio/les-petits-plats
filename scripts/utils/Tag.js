@@ -191,23 +191,13 @@ export default class Tag {
 			const tagsList = tagsContainer.querySelectorAll('li');
 			tagsList.forEach(tagElement => {
 				tagElement.addEventListener('click', () => {
-					//on crée le tag
-					const tag = document.createElement('div');
-					tag.classList.add(`tag-${input.placeholder}`);
-					tag.innerHTML = `${tagElement.textContent}<i class="fa-regular fa-circle-xmark"></i>`;
-					document.querySelector('.tags').appendChild(tag);
+					// on ajoute à this.currentTags le tag recherché et on l'affiche
 					this.addCurrentTags(input.placeholder, tagElement.textContent);
 					console.log('this.currentTags', this.currentTags);
 					// on vide les résultats et récupère la valeur du mot clé recherché
 					document.querySelector('.recipes').innerHTML = '';
-					// const tagValue = tagElement.textContent.toLowerCase();
 					// non terminé : on filtre les résultats en fonction du/des mot(s) clé(s) 
 					checkTagsValue_FilterRecipes();
-					// on retire le tag en cliquant sur l'icon X
-					const closeIcon = tag.querySelector('i');
-					closeIcon.addEventListener('click', () => {
-						closeIcon.parentElement.remove();
-					});
 				});
 			});
 		};
@@ -222,9 +212,9 @@ export default class Tag {
 					// console.log(acc);
 					switch (currentTagCategory) {
 					case 'ingredients':
-						this.currentTags.ingredients.map(tagIngredient => {
+						this.currentTags.ingredients.map((currentTagIngredient) => {
 							currentRecipe.ingredients.map(currentRecipeIngredient => {
-								if (currentRecipeIngredient.ingredient.toLowerCase() == tagIngredient.toLowerCase()) {
+								if (currentRecipeIngredient.ingredient.toLowerCase() == currentTagIngredient.toLowerCase()) {
 									matchIngredients = true;
 								}
 							});
@@ -268,7 +258,6 @@ export default class Tag {
 					this.cardWrapper.appendChild(el.createCard());
 				});
 			}
-			// console.log('this.currentTags', this.currentTags);
 			console.log({filteredResult});
 			// let template = [...this.data].filter(recipe => {
 			// 	if(recipe.name.toLowerCase().includes(tagValue) 
@@ -323,7 +312,20 @@ export default class Tag {
 			return;
 		} else {
 			this.currentTags[category].push(tagContent);
-			// console.log(this.currentTags[category]);
+			//on crée le tag et on l'affiche, il ne s'affichera qu'une seule fois
+			const tag = document.createElement('div');
+			tag.classList.add(`tag-${currentInputPlaceholder}`);
+			tag.innerHTML = `${tagContent}<i class="fa-regular fa-circle-xmark"></i>`;
+			document.querySelector('.tags').appendChild(tag);
+			// on retire le tag en cliquant sur l'icon X
+			const closeIcon = tag.querySelector('i');
+			closeIcon.addEventListener('click', () => {
+				closeIcon.parentElement.remove();
+				// console.log(this.currentTags[category]);
+				this.currentTags[category].splice(0, this.currentTags[category].length);
+				// console.log(this.currentTags[category]);
+			});
+
 		}
 	};
 }
