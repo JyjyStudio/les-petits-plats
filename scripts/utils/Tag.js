@@ -18,9 +18,6 @@ export default class Tag {
 			appliances : [], 
 			ustensils : []
 		};
-
-		// this.currentRecipes = new Set();
-		// this.currentIndex = new Set();
 	}
 
 	async filterTags() {
@@ -201,7 +198,7 @@ export default class Tag {
 			tagsList.forEach(tagElement => {
 				tagElement.addEventListener('click', () => {
 					// on ajoute à this.currentTags le tag recherché et on l'affiche
-					this.addCurrentTags(input.placeholder, tagElement.textContent);
+					updateCurrentTags(input.placeholder, tagElement.textContent);
 					console.log('%cThis.currentTags', 'color: blue', this.currentTags);
 					// on vide les résultats et récupère la valeur du mot clé recherché
 					document.querySelector('.recipes').innerHTML = '';
@@ -225,8 +222,6 @@ export default class Tag {
 				
 				return filteredRecipes;
 			}, []);
-
-			console.log(filteredResult);
 			
 			this.cardWrapper.innerHTML = '';
 			let template = filteredResult.map(el=>new RecipeCard(el));
@@ -240,46 +235,48 @@ export default class Tag {
 
 			console.log('%cFilteredResult', 'color : blue', filteredResult);
 		};
+			
+		const updateCurrentTags = (currentInputPlaceholder, tagContent) => {
+			// ajoute à this.currentTags le tag séléctionné soit dans ingredients, appliance ou ustensils en fonction de la catégorie de l'input
+			let category;
+			switch (currentInputPlaceholder) {
+			case 'Ingrédients':
+				category = 'ingredients';
+				break;
+			case 'Appareils':
+				category = 'appliances';
+				break;
+			case 'Ustensiles':
+				category = 'ustensils';
+				tagContent = tagContent.toLowerCase();
+				break;
+			default:
+				break;
+			}
+			// Si le tag est déja dans la liste des tags on ne fait rien, sinon on le crée et on l'affiche / évite les doublons (alternative d'un Set) 
+			if(this.currentTags[category].includes(tagContent)) {
+				return;
+			} else {
+				this.currentTags[category].push(tagContent);
+				//on crée le tag et on l'affiche, il ne s'affichera qu'une seule fois
+				const tag = document.createElement('div');
+				tag.classList.add(`tag-${currentInputPlaceholder}`);
+				tag.innerHTML = `${tagContent}<i class="fa-regular fa-circle-xmark"></i>`;
+				document.querySelector('.tags').appendChild(tag);
+				// on retire le tag en cliquant sur l'icon X
+				const closeIcon = tag.querySelector('i');
+				closeIcon.addEventListener('click', () => {
+					closeIcon.parentElement.remove();
+					// console.log(this.currentTags[category]);
+					this.currentTags[category].splice(-1, 1);
+					console.log('%cThis.currentTags', 'color: blue', this.currentTags);
+					checkTagsValue_FilterRecipes();
+				});
+			}
+		};
 		
 		listenInput(this.filteredLabels.ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
 		listenInput(this.filteredLabels.appareils, appareilsTagsContainer, appareilsFilter, appareilsInput, appareilsIcon);
 		listenInput(this.filteredLabels.ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustensilesIcon);
 	}
-
-	addCurrentTags = (currentInputPlaceholder, tagContent) => {
-		let category;
-		switch (currentInputPlaceholder) {
-		case 'Ingrédients':
-			category = 'ingredients';
-			break;
-		case 'Appareils':
-			category = 'appliances';
-			break;
-		case 'Ustensiles':
-			category = 'ustensils';
-			tagContent = tagContent.toLowerCase();
-			break;
-		default:
-			break;
-		}
-		if(this.currentTags[category].includes(tagContent)) {
-			return;
-		} else {
-			this.currentTags[category].push(tagContent);
-			//on crée le tag et on l'affiche, il ne s'affichera qu'une seule fois
-			const tag = document.createElement('div');
-			tag.classList.add(`tag-${currentInputPlaceholder}`);
-			tag.innerHTML = `${tagContent}<i class="fa-regular fa-circle-xmark"></i>`;
-			document.querySelector('.tags').appendChild(tag);
-			// on retire le tag en cliquant sur l'icon X
-			const closeIcon = tag.querySelector('i');
-			closeIcon.addEventListener('click', () => {
-				closeIcon.parentElement.remove();
-				// console.log(this.currentTags[category]);
-				this.currentTags[category].splice(0, this.currentTags[category].length);
-				console.log('%cThis.currentTags', 'color: blue', this.currentTags);
-			});
-
-		}
-	};
 }
