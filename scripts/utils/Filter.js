@@ -1,5 +1,6 @@
 import RecipeCard from './../templates/RecipeCard.js';
 import RecipesApi from '../Api/Api.js';
+import Tag from './Tag.js';
 
 export default class Filter {
 	constructor() {
@@ -7,6 +8,7 @@ export default class Filter {
 		this.cardWrapper = document.querySelector('main .recipes');
 		this.getCompareValueFromSearchBar = this.getCompareValueFromSearchBar();
 		this.focusOnload = this.focusOnload();
+		this.tags = new Tag();
 	}
 	
 	async displayAllRecipes() {
@@ -44,15 +46,18 @@ export default class Filter {
 
 	async checkSearchBarValue(searchedValue) {
 		const recipes = await this.data;
+		const currentTags = this.tags.currentTags;
+		console.log(currentTags);
+
 		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
-		let template = recipes.filter(recipe => 
+		let filteredRecipes = recipes.filter(recipe => 
 			recipe.name.toLowerCase().includes(searchedValue) 
 			|| recipe.description.toLowerCase().includes(searchedValue) 
 			|| recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue)) 
 			|| recipe.ingredients.some(ingredient => ingredient.unit ? ingredient.unit.toLowerCase().includes(searchedValue) : '') 
 		);
 		
-		template = template.map(el => new RecipeCard(el));
+		let template = filteredRecipes.map(el => new RecipeCard(el));
 	
 		// efface les recettes présentes puis: si le tableau de correspondance est vide => affiche 'aucun résultat trouvé.', sinon affiche les resultats trouvé via RecipeCard.createCard()
 		this.cardWrapper.innerHTML = '';
