@@ -47,7 +47,7 @@ export default class Filter {
 	async checkSearchBarValue(searchedValue) {
 		const recipes = await this.data;
 		const currentTags = this.tags.currentTags;
-		console.log(currentTags);
+		console.log('currentTags', currentTags);
 
 		// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
 		let filteredRecipes = recipes.filter(recipe => 
