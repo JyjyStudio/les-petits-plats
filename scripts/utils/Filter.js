@@ -22,7 +22,8 @@ export default class Tag {
 		this.focusOnload = this.focusOnload();
 	}
 
-	async filterTags() {
+	async filterBy_Searchbar_Tags() {
+		
 		const data = await new RecipesApi('data/recipes.json').getRecipes();
 		//Envoi toutes les recette en globlal dans this.data
 		data.forEach(recipe => {
