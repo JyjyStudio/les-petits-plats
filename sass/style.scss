@@ -184,13 +184,13 @@ header {
 	.filtre-appareils-content, 
 	.filtre-ustensiles-content { //ul
 		display: none;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: auto auto auto;
 		width: 600px;
 		color: #fff;
 		overflow: hidden;
     	border-radius: 0 0 5px 5px;
-		&.not-found {
-			grid-template-columns: 1fr;
+		& .not-found {
+			padding: 0.5rem 1rem;
 		}
 		&.selected {
 			display: grid;
