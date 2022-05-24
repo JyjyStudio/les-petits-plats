@@ -22,13 +22,18 @@ export default class Tag {
 		this.focusOnload = this.focusOnload();
 	}
 
-	async filterBy_Searchbar_Tags() {
-		
+	async getData() {
 		const data = await new RecipesApi('data/recipes.json').getRecipes();
 		//Envoi toutes les recette en globlal dans this.data
 		data.forEach(recipe => {
 			this.data.add(recipe);
 		});
+	}
+
+	filterBy_Searchbar_Tags() {
+
+		this.getData();
+
 		// parcours la data et ajoute à this.filteredLabels chaque ingrédient, appareil, ustensile
 		[...this.data].forEach(recipe => {
 			recipe.appliance ? this.filteredLabels.appareils.add(recipe.appliance.toLowerCase()) : '';
@@ -56,9 +61,7 @@ export default class Tag {
 		this.listenInput(this.filteredLabels.ingredients, ingredientsTagsContainer, ingredientsFilter, ingredientsInput, ingredientsIcon);
 		this.listenInput(this.filteredLabels.appareils, appareilsTagsContainer, appareilsFilter, appareilsInput, appareilsIcon);
 		this.listenInput(this.filteredLabels.ustensiles, ustensilesTagsContainer, ustensilesFilter, ustensilesInput, ustensilesIcon);
-		
-		console.log(this.currentTags);
-		// return this.currentTags;
+
 	}
 
 	/**
@@ -70,7 +73,8 @@ export default class Tag {
 	* @param {HTMLElement} icon - Icone à droite de l'input qui permet d'ouvrir ou de fermer la liste des tags
 	*/
 	listenInput = (data, tagsContainer, filter, input, icon) => {
-		// l'input s'ouvre en cliquant sur çelui-ci 
+
+		// l'input de recherche avancée s'ouvre en cliquant sur çelui-ci 
 		input.addEventListener('focus', () => {
 			filter.classList.add('selected');
 			input.classList.add('selected');
@@ -101,23 +105,43 @@ export default class Tag {
 			this.renderTag_filterRecipes(input, tagsContainer);
 		});
 
-		// enlever le comportement par défaut du formulaire en faisant une recherche 
+		// enlève le comportement par défaut du formulaire en faisant une recherche 
 		const form = document.getElementById('search-form');
 		form.addEventListener('submit', (e) => {
 			e.preventDefault();
 		});
 
-		// ecoute sur la barre de recherche principale
-		const searchbarInput = document.querySelector('form .search-bar');
-		searchbarInput.addEventListener('keyup', (e) => {
-			// console.time('search');
+		// écoute sur la barre de recherche principale
+		const searchbar = document.querySelector('form .search-bar');
+		searchbar.addEventListener('keyup', (e) => {
+			e.stopImmediatePropagation(); //évite d'executer 2 fois les lignes suivantes
 			if(e.keyCode !== 13) { //evite de relancer une recherche en tappant sur entrée 
-				e.stopImmediatePropagation(); //évite d'executer 2 fois la ligne suivante
-				this.checkTagsValue_FilterRecipes();
-			} 
-			// console.timeEnd('search');
+				this.checkValues_FilterRecipes();
+			}
+
+			// if(searchbar.value.length == 2 ) {
+			// 	// si aucun tag n'a été précisé, on affiche toutes les recherches. Si un tag à été recherché on ne fait rien
+			// 	Object.values(this.currentTags).every(currentTag => {
+			// 		if(currentTag.length == 0) {
+			// 			this.displayAllRecipes();
+			// 		}else {
+			// 			this.checkValues_FilterRecipes();
+			// 		}
+			// 	});
+			// }
 		});
 	};
+
+	async displayAllRecipes() {
+		const recipes = await this.data;
+		this.cardWrapper.innerHTML = '';
+
+		recipes.forEach(recipe => {
+			const template = new RecipeCard(recipe);
+			this.cardWrapper.appendChild(template.createCard());
+		});
+	}
+	
 
 	clearLabels = () => {
 		this.filteredLabels = {
@@ -141,16 +165,6 @@ export default class Tag {
 		window.addEventListener('load', () => {
 			const searchInput = document.querySelector('form .search-bar');
 			searchInput.focus();
-		});
-	}
-	//affiche toutes les recettes 
-	async displayAllRecipes() {
-		const recipes = await this.data;
-		this.cardWrapper.innerHTML = '';
-	
-		recipes.forEach(recipe => {
-			const template = new RecipeCard(recipe);
-			this.cardWrapper.appendChild(template.createCard());
 		});
 	}
 	
@@ -190,10 +204,8 @@ export default class Tag {
 					filteredTagsBySearchtag.forEach(ingredient => {
 						tagsContainer.innerHTML += `<li class='tag'>${ingredient.charAt(0).toUpperCase() + ingredient.slice(1)}</li>`;
 					});
-					tagsContainer.classList.remove('not-found');
 				} else {
-					tagsContainer.classList.add('not-found');
-					tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
+					tagsContainer.innerHTML = `<p class='not-found'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
 				}
 				break;
 			case 'labels-appareils':
@@ -205,10 +217,8 @@ export default class Tag {
 					this.filteredLabels.appareils.forEach(appliance => {
 						tagsContainer.innerHTML += `<li class='tag'>${appliance.charAt(0).toUpperCase() + appliance.slice(1)}</li>`;
 					});
-					tagsContainer.classList.remove('not-found');
 				} else {
-					tagsContainer.classList.add('not-found');
-					tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
+					tagsContainer.innerHTML = `<p class='not-found'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
 				}
 				break;
 			case 'labels-ustensiles':
@@ -222,19 +232,17 @@ export default class Tag {
 					filteredTagsBySearchtag.forEach(ustensile => {
 						tagsContainer.innerHTML += `<li class='tag'>${ustensile.charAt(0).toUpperCase() + ustensile.slice(1)}</li>`;
 					});
-					tagsContainer.classList.remove('not-found');
 				} else {
-					tagsContainer.classList.add('not-found');
-					tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
+					tagsContainer.innerHTML = `<p class='not-found'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
 				}
 				break;
 			default:
-				console.log('type de label inexistant');
+				console.log('type de tag inéxistant');
 				break;
 			}
 		} else {
-			tagsContainer.classList.add('not-found');
-			tagsContainer.innerHTML = `<li class='tag'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
+			// si la recherche principale ne touve aucune recette, aucun tag de recherche avancée n'est proposé
+			tagsContainer.innerHTML = `<p class='not-found'>Aucun ${input.placeholder.toLowerCase().slice(0, -1)} ne correspond à votre recherche.</li>`;
 		}
 	};
 
@@ -247,14 +255,14 @@ export default class Tag {
 				console.log('%cThis.currentTags', 'color: blue', this.currentTags);
 				// on vide les résultats et récupère la valeur du mot clé recherché
 				document.querySelector('.recipes').innerHTML = '';
-				// non terminé : on filtre les résultats en fonction du/des mot(s) clé(s) + tag(s)
-				this.checkTagsValue_FilterRecipes();
+				// on filtre les résultats en fonction du/des mot(s) clé(s) + tag(s)
+				this.checkValues_FilterRecipes();
 			});
 		});
 	};
 
 	// Vérifie dans chaque recette si le mot recherché est contenu dans la recette, et retourne template (le tableau filtré)
-	checkTagsValue_FilterRecipes = () => {
+	checkValues_FilterRecipes = () => {
 
 		const searchedValue = document.querySelector('form .search-bar').value.toLowerCase().trim();
 		const filteredResult = [...this.data].reduce((filteredRecipes, currentRecipe) => {
@@ -263,17 +271,18 @@ export default class Tag {
 			// si une recette contient tous les tag ET le mot clé dans la barre de recherche => matchIngredient = true
 			if(this.currentTags.ingredients.every(tagIngredient => 
 				currentRecipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(tagIngredient.toLowerCase())) 
-				&& currentRecipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(this.searchBar.value.toLowerCase())))) 
+			)) 
 				matchIngredient = true;
 
 			if(currentRecipe.appliance.includes(this.currentTags.appliances)) matchAppliance = true;
 			
 			if(this.currentTags.ustensils.every(tagUstensil => currentRecipe.ustensils.includes(tagUstensil))) matchUstensil = true;
 			
-			if(matchIngredient && matchAppliance && matchUstensil && (currentRecipe.name.toLowerCase().includes(searchedValue) 
-			|| currentRecipe.description.toLowerCase().includes(searchedValue) 
-			|| currentRecipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue)) 
-			|| currentRecipe.ingredients.some(ingredient => ingredient.unit ? ingredient.unit.toLowerCase().includes(searchedValue) : '') )) {
+			if(matchIngredient && matchAppliance && matchUstensil && (
+				currentRecipe.name.toLowerCase().includes(searchedValue) 
+			||  currentRecipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchedValue)) 
+			||  currentRecipe.description.toLowerCase().includes(searchedValue) 
+			)) {
 				filteredRecipes.push(currentRecipe);
 			}
 			
@@ -281,8 +290,8 @@ export default class Tag {
 		}, []);
 		
 		this.cardWrapper.innerHTML = '';
-		let template = filteredResult.map(el=>new RecipeCard(el));
 
+		let template = filteredResult.map(el=>new RecipeCard(el));
 		if(template.length == 0) {
 			this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
 		} else {
@@ -290,7 +299,6 @@ export default class Tag {
 				this.cardWrapper.appendChild(el.createCard());
 			});
 		}
-
 		console.log('%cFilteredResult', 'color : blue', filteredResult);
 	};
 	
@@ -311,12 +319,11 @@ export default class Tag {
 		default:
 			break;
 		}
-		// Si le tag est déja dans la liste des tags on ne fait rien, sinon on le crée et on l'affiche / évite les doublons (alternative d'un Set) 
 
+		// Si le tag est déja dans la liste des tags on ne fait rien, sinon on le crée et on l'affiche / évite les doublons (alternative d'un Set) 
 		if(this.currentTags[category].includes(tagContent)) {
 			return;
 		} else {
-			// si le tag n'est pas déja dans this.currentTags, on l'ajoute
 			this.currentTags[category].push(tagContent);
 			//on crée le tag et on l'affiche, il ne s'affichera qu'une seule fois
 			const tag = document.createElement('div');
@@ -327,15 +334,10 @@ export default class Tag {
 			const closeIcon = tag.querySelector('i');
 			closeIcon.addEventListener('click', () => {
 				closeIcon.parentElement.remove();
-				// console.log(this.currentTags[category]);
 				this.currentTags[category].splice(-1, 1);
 				console.log('%cThis.currentTags', 'color: blue', this.currentTags);
-				this.checkTagsValue_FilterRecipes();
+				this.checkValues_FilterRecipes();
 			});
-
-			// console.log(this.currentTags);
-			window.currentTags = this.currentTags;
-			// return this.currentTags;
 		}
 	};
 }
