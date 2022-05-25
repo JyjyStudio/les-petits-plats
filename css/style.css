@@ -237,6 +237,7 @@ header h1 {
 .filtres .filtre-ustensiles-content.selected {
   display: grid;
   height: 16rem;
+  overflow-y: scroll;
 }
 .filtres .filtre-ingredients-content.selected::-webkit-scrollbar,
 .filtres .filtre-appareils-content.selected::-webkit-scrollbar,
@@ -256,7 +257,6 @@ header h1 {
     flex-direction: column;
     width: 100%;
     padding: 0;
-    overflow-y: scroll;
   }
 }
 .filtres .filtre-ingredients-content.selected .tag,
