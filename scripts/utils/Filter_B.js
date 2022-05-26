@@ -115,8 +115,8 @@ export default class Filter_B {
 		});
 	};
 
-	async displayAllRecipes() {
-		const recipes = await this.data;
+	displayAllRecipes() {
+		const recipes = this.data;
 		this.cardWrapper.innerHTML = '';
 
 		recipes.forEach(recipe => {
@@ -249,6 +249,8 @@ export default class Filter_B {
 				this.filteredResult.add(currentRecipe);
 			}	
 		}
+		
+		console.timeEnd('search_B');
 		//met a jour this.filteredResult en fonction de la recherche
 		this.clearLabels();
 		this.filteredResult.forEach(recipe => {
@@ -256,8 +258,6 @@ export default class Filter_B {
 			this.filteredLabels.appliance.add(recipe.appliance.toLowerCase());
 			recipe.ustensils.forEach(ustensil => this.filteredLabels.ustensils.add(ustensil.toLowerCase()));
 		});
-
-		console.timeEnd('search_B');
 		
 		this.cardWrapper.innerHTML = '';
 
