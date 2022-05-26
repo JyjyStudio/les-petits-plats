@@ -51,6 +51,9 @@ header {
 		&[placeholder] {
 			padding-left: 20px;
 		}
+		&:focus {
+			border: 2px #a2a2f2 solid;
+		}
 	}
 	#search-icon {
 		position: absolute;
