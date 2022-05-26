@@ -55,6 +55,9 @@ header h1 {
 .search .search-bar[placeholder] {
   padding-left: 20px;
 }
+.search .search-bar:focus {
+  border: 2px #a2a2f2 solid;
+}
 .search #search-icon {
   position: absolute;
   top: 50%;
