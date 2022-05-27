@@ -115,8 +115,8 @@ export default class Filter_B {
 		});
 	};
 
-	async displayAllRecipes() {
-		const recipes = await this.data;
+	displayAllRecipes() {
+		const recipes = this.data;
 		this.cardWrapper.innerHTML = '';
 
 		recipes.forEach(recipe => {
