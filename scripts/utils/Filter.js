@@ -223,8 +223,8 @@ export default class Filter_A {
 		let searchbarValue = '';
 		if(searchbar.value.length >= 3) {
 			searchbarValue = searchbar.value.toLowerCase().trim();
+			console.time('reduce');
 		}
-		console.time('search_A');
 		this.filteredResult = [...this.data].reduce((filteredRecipes, currentRecipe) => {
 			let matchIngredient, matchAppliance, matchUstensil;
 
@@ -248,6 +248,7 @@ export default class Filter_A {
 			
 			return filteredRecipes;
 		}, []);
+		if(searchbar.value.length >= 3) console.timeEnd('reduce');
 
 		//met a jour this.filteredResult en fonction de la recherche
 		this.clearLabels();
@@ -256,8 +257,6 @@ export default class Filter_A {
 			this.filteredLabels.appliance.add(recipe.appliance.toLowerCase());
 			recipe.ustensils.forEach(ustensil => this.filteredLabels.ustensils.add(ustensil.toLowerCase()));
 		});
-
-		console.timeEnd('search_A');
 		
 		this.cardWrapper.innerHTML = '';
 
