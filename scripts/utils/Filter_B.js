@@ -225,8 +225,8 @@ export default class Filter_B {
 		let searchbarValue = '';
 		if(searchbar.value.length >= 3) {
 			searchbarValue = searchbar.value.toLowerCase().trim();
+			console.time('for..of');
 		}
-		console.time('search_B');
 		for(let currentRecipe of [...this.data]) {
 			let matchIngredient, matchAppliance, matchUstensil;
 
@@ -249,25 +249,29 @@ export default class Filter_B {
 				this.filteredResult.add(currentRecipe);
 			}	
 		}
+		if(searchbar.value.length >= 3) console.timeEnd('for..of');
+
 		//met a jour this.filteredResult en fonction de la recherche
 		this.clearLabels();
-		this.filteredResult.forEach(recipe => {
+		for (const recipe of this.filteredResult) {
 			recipe.ingredients.forEach(ingredient => this.filteredLabels.ingredients.add(ingredient.ingredient.toLowerCase()));
 			this.filteredLabels.appliance.add(recipe.appliance.toLowerCase());
 			recipe.ustensils.forEach(ustensil => this.filteredLabels.ustensils.add(ustensil.toLowerCase()));
-		});
-
-		console.timeEnd('search_B');
+		}
 		
 		this.cardWrapper.innerHTML = '';
 
-		let template = [...this.filteredResult].map(el=>new RecipeCard(el));
+		let template = [];
+		for (const filteredRecipe of this.filteredResult) {
+			template.push(new RecipeCard(filteredRecipe));
+		}
+
 		if(template.length == 0) {
 			this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
 		} else {
-			template.forEach(el => {
-				this.cardWrapper.appendChild(el.createCard());
-			});
+			for (const recipeCard of template) {
+				this.cardWrapper.appendChild(recipeCard.createCard());
+			}
 		}
 		// console.log('%cFilteredResult', 'color : blue', this.filteredResult);
 	};
