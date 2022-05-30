@@ -114,16 +114,6 @@ export default class Filter_A {
 		});
 	};
 
-	displayAllRecipes() {
-		const recipes = this.data;
-		this.cardWrapper.innerHTML = '';
-
-		recipes.forEach(recipe => {
-			const template = new RecipeCard(recipe);
-			this.cardWrapper.appendChild(template.createCard());
-		});
-	}
-
 	clearLabels = () => {
 		this.filteredLabels = {
 			ingredients: new Set(),
@@ -262,7 +252,7 @@ export default class Filter_A {
 
 		let template = this.filteredResult.map(el=>new RecipeCard(el));
 		if(template.length == 0) {
-			this.cardWrapper.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..';
+			this.cardWrapper.innerHTML = '<p class="not-found">Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc..</p>';
 		} else {
 			template.forEach(el => {
 				this.cardWrapper.appendChild(el.createCard());
