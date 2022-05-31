@@ -154,18 +154,6 @@ header {
 				color: #fff;
 			}
 		}
-		/*scrollbar des tags*/
-		&:hover {
-			.filtre-ingredients-content::-webkit-scrollbar-thumb {
-				background-color: darken(#3282F7, 10%); 
-			}
-			.filtre-appareils-content::-webkit-scrollbar-thumb {
-				background-color: darken(#68D9A4, 10%); 
-			}
-			.filtre-ustensiles-content::-webkit-scrollbar-thumb {
-				background-color: darken(#ED6454, 10%); 
-			}
-		}
 		.selected {
 			width: 600px;
 			@include mobiles {
@@ -180,6 +168,17 @@ header {
 			}
 		}
 	}
+	#filtre-ingredients:hover .filtre-ingredients-content::-webkit-scrollbar-thumb {
+		/*scrollbar des tags*/
+		background-color: darken(#3282F7, 10%); 
+	}
+	#filtre-appareils:hover .filtre-appareils-content::-webkit-scrollbar-thumb {
+			background-color: darken(#68D9A4, 10%); 
+		}
+	#filtre-ustensiles:hover .filtre-ustensiles-content::-webkit-scrollbar-thumb {
+			background-color: darken(#ED6454, 10%); 
+		}
+	
 	.filtre-ingredients-content, 
 	.filtre-appareils-content, 
 	.filtre-ustensiles-content { //ul
