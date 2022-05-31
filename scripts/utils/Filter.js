@@ -106,8 +106,8 @@ export default class Filter_A {
 		});
 
 		// écoute sur la barre de recherche principale
-		document.querySelector('form .search-bar').addEventListener('keyup', (e) => {
-			e.stopImmediatePropagation(); //évite d'executer 2 fois les lignes suivantes
+		document.querySelector('form .search-bar').addEventListener('input', (e) => {
+			e.stopImmediatePropagation(); //évite d'executer plusieurs fois les lignes suivantes
 			if(e.keyCode !== 13) { //evite de relancer une recherche en tappant sur entrée 
 				this.checkValues_FilterRecipes();
 			}
@@ -223,7 +223,7 @@ export default class Filter_A {
 			)) 
 				matchIngredient = true;
 
-			if(currentRecipe.appliance.includes(this.currentTags.appliance)) matchAppliance = true;
+			if(this.currentTags.appliance.every(tagAppliance => currentRecipe.appliance.toLowerCase().includes(tagAppliance.toLowerCase()))) matchAppliance = true;
 			
 			if(this.currentTags.ustensils.every(tagUstensil => currentRecipe.ustensils.some(recipeUstensil => recipeUstensil.toLowerCase().includes(tagUstensil.toLowerCase())))) matchUstensil = true;
 			
