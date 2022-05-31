@@ -12,10 +12,10 @@ export default class CardFactory {
 
 		const recipesData = await this.recipesApi.getRecipes();
 
-		recipesData.forEach((recipe) => {
-			const Template = new RecipeCard(recipe);
-			this.cardWrapper.appendChild(Template.createCard());
-		});
+		for (const recipe of recipesData) {
+			const template = new RecipeCard(recipe);
+			this.cardWrapper.appendChild(template.createCard());
+		}
 
 	};
 
