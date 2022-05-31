@@ -147,11 +147,6 @@ header h1 {
   transform: rotate(180deg);
   transition: transform 0.3s ease-in-out 0.2s;
 }
-.filtres #filtre-ingredients,
-.filtres #filtre-appareils,
-.filtres #filtre-ustensiles {
-  /*scrollbar des tags*/
-}
 .filtres #filtre-ingredients input,
 .filtres #filtre-appareils input,
 .filtres #filtre-ustensiles input {
@@ -177,21 +172,6 @@ header h1 {
 .filtres #filtre-ustensiles input::placeholder {
   color: #fff;
 }
-.filtres #filtre-ingredients:hover .filtre-ingredients-content::-webkit-scrollbar-thumb,
-.filtres #filtre-appareils:hover .filtre-ingredients-content::-webkit-scrollbar-thumb,
-.filtres #filtre-ustensiles:hover .filtre-ingredients-content::-webkit-scrollbar-thumb {
-  background-color: #0966ed;
-}
-.filtres #filtre-ingredients:hover .filtre-appareils-content::-webkit-scrollbar-thumb,
-.filtres #filtre-appareils:hover .filtre-appareils-content::-webkit-scrollbar-thumb,
-.filtres #filtre-ustensiles:hover .filtre-appareils-content::-webkit-scrollbar-thumb {
-  background-color: #3fcf8b;
-}
-.filtres #filtre-ingredients:hover .filtre-ustensiles-content::-webkit-scrollbar-thumb,
-.filtres #filtre-appareils:hover .filtre-ustensiles-content::-webkit-scrollbar-thumb,
-.filtres #filtre-ustensiles:hover .filtre-ustensiles-content::-webkit-scrollbar-thumb {
-  background-color: #e83a26;
-}
 .filtres #filtre-ingredients .selected,
 .filtres #filtre-appareils .selected,
 .filtres #filtre-ustensiles .selected {
@@ -216,6 +196,16 @@ header h1 {
 .filtres #filtre-ustensiles input.selected {
     width: 100%;
   }
+}
+.filtres #filtre-ingredients:hover .filtre-ingredients-content::-webkit-scrollbar-thumb {
+  /*scrollbar des tags*/
+  background-color: #0966ed;
+}
+.filtres #filtre-appareils:hover .filtre-appareils-content::-webkit-scrollbar-thumb {
+  background-color: #3fcf8b;
+}
+.filtres #filtre-ustensiles:hover .filtre-ustensiles-content::-webkit-scrollbar-thumb {
+  background-color: #e83a26;
 }
 .filtres .filtre-ingredients-content,
 .filtres .filtre-appareils-content,
