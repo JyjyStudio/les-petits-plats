@@ -73,7 +73,6 @@ export default class Filter_B {
 			filter.classList.add('selected');
 			input.classList.add('selected');
 			tagsContainer.classList.add('selected');
-			// this.clearLabels();
 			this.checkValues_FilterRecipes();
 			this.show_filter_TagList(input, tagsContainer, data);
 			this.renderTag_filterRecipes(input, tagsContainer);
@@ -95,7 +94,6 @@ export default class Filter_B {
 		
 		// compare les mots recherchés et affiche les tags par rapport à ces mots clés
 		input.addEventListener('input', () => {
-			// this.clearLabels();
 			this.show_filter_TagList(input, tagsContainer, data);
 			this.renderTag_filterRecipes(input, tagsContainer);
 		});
@@ -107,11 +105,9 @@ export default class Filter_B {
 		});
 
 		// écoute sur la barre de recherche principale
-		document.querySelector('form .search-bar').addEventListener('keyup', (e) => {
-			e.stopImmediatePropagation(); //évite d'executer 2 fois les lignes suivantes
-			if(e.keyCode !== 13) { //evite de relancer une recherche en tappant sur entrée 
-				this.checkValues_FilterRecipes();
-			}
+		document.querySelector('form .search-bar').addEventListener('input', (e) => {
+			e.stopImmediatePropagation(); //évite d'executer plusieurs fois les lignes suivantes
+			this.checkValues_FilterRecipes();
 		});
 	};
 
@@ -226,7 +222,7 @@ export default class Filter_B {
 			)) 
 				matchIngredient = true;
 
-			if(currentRecipe.appliance.includes(this.currentTags.appliance)) matchAppliance = true;
+			if(this.currentTags.appliance.every(tagAppliance => currentRecipe.appliance.toLowerCase().includes(tagAppliance.toLowerCase()))) matchAppliance = true;
 			
 			if(this.currentTags.ustensils.every(tagUstensil => currentRecipe.ustensils.some(recipeUstensil => recipeUstensil.toLowerCase().includes(tagUstensil.toLowerCase())))) matchUstensil = true;
 			
