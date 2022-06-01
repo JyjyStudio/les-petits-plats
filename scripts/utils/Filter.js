@@ -223,7 +223,7 @@ export default class Filter_A {
 			)) 
 				matchIngredient = true;
 
-			if(currentRecipe.appliance.includes(this.currentTags.appliance)) matchAppliance = true;
+			if(this.currentTags.appliance.every(tagAppliance => currentRecipe.appliance.toLowerCase().includes(tagAppliance.toLowerCase()))) matchAppliance = true;
 			
 			if(this.currentTags.ustensils.every(tagUstensil => currentRecipe.ustensils.some(recipeUstensil => recipeUstensil.toLowerCase().includes(tagUstensil.toLowerCase())))) matchUstensil = true;
 			
