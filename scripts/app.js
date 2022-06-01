@@ -1,6 +1,6 @@
 import CardFactory from './factories/CardFactory.js';
-import Filter_A from './utils/Filter.js';
-// import Filter_B from './utils/Filter_B.js';
+import Filter_A from './utils/Filter.js'; // via reduce
+// import Filter_B from './utils/Filter_B.js';  // via for of
 
 class App {
 	
