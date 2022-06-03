@@ -106,7 +106,7 @@ export default class Filter_A {
 		});
 
 		// écoute sur la barre de recherche principale
-		document.querySelector('form .search-bar').addEventListener('keyup', (e) => {
+		document.querySelector('form .search-bar').addEventListener('input', (e) => {
 			e.stopImmediatePropagation(); //évite d'executer 2 fois les lignes suivantes
 			if(e.keyCode !== 13) { //evite de relancer une recherche en tappant sur entrée 
 				this.checkValues_FilterRecipes();
@@ -215,7 +215,7 @@ export default class Filter_A {
 			searchbarValue = searchbar.value.toLowerCase().trim();
 			console.time('reduce');
 		}
-		this.filteredResult = [...this.data].reduce((filteredRecipes, currentRecipe) => {
+		this.filteredResult = Array.from(this.data).reduce((filteredRecipes, currentRecipe) => {
 			let matchIngredient, matchAppliance, matchUstensil;
 
 			if(this.currentTags.ingredients.every(tagIngredient => 
