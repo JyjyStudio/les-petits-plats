@@ -107,8 +107,8 @@ export default class Filter_B {
 		});
 
 		// écoute sur la barre de recherche principale
-		document.querySelector('form .search-bar').addEventListener('keyup', (e) => {
-			e.stopImmediatePropagation(); //évite d'executer 2 fois les lignes suivantes
+		document.querySelector('form .search-bar').addEventListener('input', (e) => {
+			e.stopImmediatePropagation(); //évite d'executer plusieurs fois les lignes suivantes
 			if(e.keyCode !== 13) { //evite de relancer une recherche en tappant sur entrée 
 				this.checkValues_FilterRecipes();
 			}
@@ -217,7 +217,7 @@ export default class Filter_B {
 			searchbarValue = searchbar.value.toLowerCase().trim();
 			console.time('for..of');
 		}
-		for(let currentRecipe of [...this.data]) {
+		for(let currentRecipe of Array.from(this.data)) {
 			let matchIngredient, matchAppliance, matchUstensil;
 
 			// si une recette contient tous les tag ET le mot clé dans la barre de recherche => matchIngredient = true
